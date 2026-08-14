@@ -24,9 +24,9 @@ def print_trip_summary(destination: str, country: str, days: int, budget: float,
     
 
 def get_trip_category(budget: int):
-    if budget < 1000:
+    if budget <= 700:
         return "Backpacker"
-    elif 1000 <= budget <= 3000:
+    elif 700 < budget <= 2000:
         return "Standard"
     else:
         return "Luxury"
