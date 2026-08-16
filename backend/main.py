@@ -22,6 +22,8 @@
 # print_trip_summary(destination, country, days, budget, currency, travel_month, travel_style, hotel_cost, food_cost, transport_cost, miscellaneous_cost, tempat_tujuan)
 
 # PART 3
+from unicodedata import category
+
 from services.trip_service import (
     calculate_daily_budget,
     get_trip_category
@@ -58,4 +60,16 @@ def create_trip(request: TripRequest):
         "budget" : request.budget,
         "daily_budget" : daily_budget,
         "category" : category,
+    }
+
+@app.get("/api/v1/recommendations")
+def get_recommendations():
+    return {
+        "recommendations": ["Tokyo Tower", "Mount Fuji", "Shibuya"]
+    }
+
+@app.get("/api/v1/transportations")
+def get_transportations():
+    return {
+        "transportations": ["Bus", "Train", "Flight"]
     }
