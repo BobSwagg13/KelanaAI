@@ -1,2 +1,5 @@
 fastapi 
 uvicorn[standard]
+sqlalchemy # the ORM
+psycopg2-binary # the Postgres driver
+python-dotenv # load .env variables
