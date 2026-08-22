@@ -30,7 +30,7 @@ from services.trip_service import (
 )
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
-
+from services.bedrock_service import generate_recommendation
 
 class TripRequest(BaseModel):
 	destination: 	str
@@ -98,6 +98,7 @@ def create_trip(request: TripRequest):
         budget       = request.budget,
         category     = category,
         daily_budget = daily_budget,
+        ai_recommendation = None
     )
 
     # save to PostgreSQL
@@ -117,13 +118,20 @@ def list_trips():
 
 @app.get("/api/v1/trips/{trip_id}")
 def get_trip(trip_id: int):
+
     db = SessionLocal()
+
     trip = db.query(Trip).filter(Trip.id == trip_id).first()
+
     db.close()
-    # handling not found
+
     if trip is None:
-        raise HTTPException(status_code=404, detail=f"Trip with id {trip_id} not found")
-        return trip
+        raise HTTPException(
+            status_code=404,
+            detail=f"Trip with id {trip_id} not found"
+        )
+
+    return trip
 
 @app.delete("/api/v1/trips/{trip_id}")
 def delete_trip(trip_id: int):
@@ -155,3 +163,34 @@ def update_budget(trip_id: int, request: TripRequest):
     db.refresh(trip)
     db.close()
     return trip
+
+@app.post("/api/v1/trips/{id}/generate")
+def generate_trip_recommendation(id: int):
+    db = SessionLocal()
+    # Get trip from database
+    trip = db.query(Trip).filter(Trip.id == id).first()
+
+    # Check if trip exists
+    if not trip:
+        raise HTTPException(
+            status_code=404,
+            detail="Trip not found"
+        )
+
+    # Generate AI recommendation using Bedrock
+    recommendation = generate_recommendation(trip)
+
+    # Save AI recommendation to database
+    trip.ai_recommendation = recommendation
+
+    db.commit()
+    db.refresh(trip)
+
+    print(recommendation)
+
+    # Return the generated recommendation
+    return {
+        "trip_id": trip.id,
+        "destination": trip.destination,
+        "ai_recommendation": recommendation
+    }
