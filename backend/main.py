@@ -21,6 +21,7 @@ MAX_TRIP_DAYS = 30
 class TripRequest(BaseModel):
     destination: str
     country: str
+    country_code: Optional[str] = None
     latitude: float
     longitude: float
     days: int = Field(ge=1, le=MAX_TRIP_DAYS)
@@ -28,6 +29,7 @@ class TripRequest(BaseModel):
     currency: str = "USD"
     travel_month: str
     travel_style: str
+    travel_group: str
     hotel_cost: Optional[float] = None
     food_cost: Optional[float] = None
     transport_cost: Optional[float] = None
@@ -62,6 +64,8 @@ def trip_to_dict(trip: Trip) -> dict:
         "id": trip.id,
         "destination": trip.destination,
         "country": trip.country,
+        "country_code": trip.country_code,
+        "created_at": trip.created_at.isoformat() if trip.created_at else None,
         "latitude": trip.latitude,
         "longitude": trip.longitude,
         "days": trip.days,
@@ -69,6 +73,7 @@ def trip_to_dict(trip: Trip) -> dict:
         "currency": trip.currency,
         "travel_month": trip.travel_month,
         "travel_style": trip.travel_style,
+        "travel_group": trip.travel_group,
         "category": trip.category,
         "daily_budget": trip.daily_budget,
         "hotel_cost": trip.hotel_cost,
@@ -92,6 +97,7 @@ def create_trip(request: TripRequest):
     trip = Trip(
         destination=request.destination,
         country=request.country,
+        country_code=request.country_code,
         latitude=request.latitude,
         longitude=request.longitude,
         days=request.days,
@@ -99,6 +105,7 @@ def create_trip(request: TripRequest):
         currency=request.currency,
         travel_month=request.travel_month,
         travel_style=request.travel_style,
+        travel_group=request.travel_group,
         category=category,
         daily_budget=daily_budget,
         hotel_cost=request.hotel_cost,
@@ -120,9 +127,20 @@ def create_trip(request: TripRequest):
 
 @app.get("/api/v1/trips")
 def list_trips():
+    """List every trip, newest first.
+
+    Postgres gives no ordering guarantee without ORDER BY, and the update /
+    generate flows rewrite rows in place, which physically moves them in the
+    heap. `id` breaks ties for rows predating `created_at`.
+    """
     db = SessionLocal()
     try:
-        return [trip_to_dict(trip) for trip in db.query(Trip).all()]
+        trips = (
+            db.query(Trip)
+            .order_by(Trip.created_at.desc().nullslast(), Trip.id.desc())
+            .all()
+        )
+        return [trip_to_dict(trip) for trip in trips]
     finally:
         db.close()
 
@@ -155,6 +173,7 @@ def update_trip(trip_id: int, request: TripRequest):
 
         trip.destination = request.destination
         trip.country = request.country
+        trip.country_code = request.country_code
         trip.latitude = request.latitude
         trip.longitude = request.longitude
         trip.days = request.days
@@ -162,6 +181,7 @@ def update_trip(trip_id: int, request: TripRequest):
         trip.currency = request.currency
         trip.travel_month = request.travel_month
         trip.travel_style = request.travel_style
+        trip.travel_group = request.travel_group
         trip.hotel_cost = request.hotel_cost
         trip.food_cost = request.food_cost
         trip.transport_cost = request.transport_cost

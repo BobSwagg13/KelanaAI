@@ -1,7 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { WifiOff, AlertTriangle, ServerCrash, MapPinOff, AlertCircle, X } from 'lucide-react';
+import {
+  WifiOff,
+  AlertTriangle,
+  ServerCrash,
+  MapPinOff,
+  SearchX,
+  AlertCircle,
+  X,
+} from 'lucide-react';
 import type { AppError, ErrorType } from '@/lib/types/errors';
 import { Button } from './Button';
 import { cn } from '@/lib/utils/cn';
@@ -18,6 +26,7 @@ const ICONS: Record<ErrorType, React.ElementType> = {
   validation: AlertTriangle,
   server: ServerCrash,
   geocoding: MapPinOff,
+  notfound: SearchX,
   unknown: AlertCircle,
 };
 

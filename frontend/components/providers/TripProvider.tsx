@@ -6,7 +6,7 @@ import { createAppError, type AppError } from '@/lib/types/errors';
 import type { CreateTripRequest, Trip } from '@/lib/types/trip';
 import type { StructuredRecommendation } from '@/lib/types/recommendation';
 
-export type LoadingStage = 'creating' | 'updating' | 'generating';
+export type LoadingStage = 'creating' | 'updating' | 'generating' | 'loading';
 
 interface TripContextValue {
   currentTrip: Trip | null;
@@ -14,8 +14,18 @@ interface TripContextValue {
   loading: boolean;
   loadingStage: LoadingStage | null;
   error: AppError | null;
-  /** First run: create the trip, then generate its recommendation. */
-  createTrip: (data: CreateTripRequest) => Promise<void>;
+  /**
+   * First run: create the trip, then generate its recommendation.
+   *
+   * Resolves with the created trip whenever the POST succeeded — INCLUDING when
+   * the follow-up generate failed, because a row exists either way. Returns null
+   * only when no row was created. Callers navigate on a non-null result; treating
+   * a failed generate as "nothing happened" would strand the row and invite a
+   * resubmit, creating a duplicate.
+   */
+  createTrip: (data: CreateTripRequest) => Promise<Trip | null>;
+  /** Load an existing trip by id into this provider. */
+  loadTrip: (tripId: number) => Promise<void>;
   /** Edit flow: save new inputs onto the existing trip, then regenerate it. */
   updateAndRegenerate: (data: CreateTripRequest) => Promise<void>;
   /** Regenerate the current trip in place. Never creates a new trip. */
@@ -28,9 +38,18 @@ interface TripContextValue {
 
 const TripContext = createContext<TripContextValue | undefined>(undefined);
 
-export function TripProvider({ children }: { children: React.ReactNode }) {
-  const [currentTrip, setCurrentTrip] = useState<Trip | null>(null);
-  const [recommendation, setRecommendation] = useState<StructuredRecommendation | null>(null);
+export function TripProvider({
+  children,
+  initialTrip = null,
+}: {
+  children: React.ReactNode;
+  /** Seed state synchronously, e.g. when a page already has the trip. */
+  initialTrip?: Trip | null;
+}) {
+  const [currentTrip, setCurrentTrip] = useState<Trip | null>(initialTrip);
+  const [recommendation, setRecommendation] = useState<StructuredRecommendation | null>(
+    initialTrip?.ai_recommendation ?? null
+  );
   const [loading, setLoading] = useState(false);
   const [loadingStage, setLoadingStage] = useState<LoadingStage | null>(null);
   const [error, setError] = useState<AppError | null>(null);
@@ -59,15 +78,32 @@ export function TripProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const createTrip = useCallback(
-    async (data: CreateTripRequest) => {
+    async (data: CreateTripRequest): Promise<Trip | null> => {
       setLastRequest(data);
+
+      // Captured outside `run` so a failing generate still reports the row that
+      // the POST already persisted.
+      let created: Trip | null = null;
+
       await run(async () => {
         setLoadingStage('creating');
-        const trip = await tripsApi.createTrip(data);
-        setCurrentTrip(trip);
+        created = await tripsApi.createTrip(data);
+        setCurrentTrip(created);
 
         setLoadingStage('generating');
-        applyTrip(await tripsApi.generateRecommendation(trip.id));
+        applyTrip(await tripsApi.generateRecommendation(created.id));
+      });
+
+      return created;
+    },
+    [run, applyTrip]
+  );
+
+  const loadTrip = useCallback(
+    async (tripId: number) => {
+      await run(async () => {
+        setLoadingStage('loading');
+        applyTrip(await tripsApi.getTrip(tripId));
       });
     },
     [run, applyTrip]
@@ -127,6 +163,7 @@ export function TripProvider({ children }: { children: React.ReactNode }) {
         loadingStage,
         error,
         createTrip,
+        loadTrip,
         updateAndRegenerate,
         regenerate,
         retry,

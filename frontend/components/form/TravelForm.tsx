@@ -14,6 +14,7 @@ import { MONTH_OPTIONS } from '@/lib/constants/months';
 import { DestinationInput } from './DestinationInput';
 import { FormField } from './FormField';
 import { TravelStyleSelector } from './TravelStyleSelector';
+import { TravelGroupSelector } from './TravelGroupSelector';
 import { CostBreakdown } from './CostBreakdown';
 import { Button } from '@/components/shared/Button';
 
@@ -37,6 +38,7 @@ const EMPTY_DEFAULTS: TripFormData = {
   currency: 'USD',
   travel_month: '',
   travel_style: '',
+  travel_group: '',
 };
 
 export function TravelForm({
@@ -72,6 +74,7 @@ export function TravelForm({
     if (selectedLocation) {
       setValue('destination', selectedLocation.name, { shouldValidate: true });
       setValue('country', selectedLocation.country, { shouldValidate: true });
+      setValue('country_code', selectedLocation.country_code);
       setValue('latitude', selectedLocation.latitude, { shouldValidate: true });
       setValue('longitude', selectedLocation.longitude, { shouldValidate: true });
     }
@@ -142,6 +145,18 @@ export function TravelForm({
               value={field.value}
               onChange={field.onChange}
               error={errors.travel_style?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="travel_group"
+          render={({ field }) => (
+            <TravelGroupSelector
+              value={field.value}
+              onChange={field.onChange}
+              error={errors.travel_group?.message}
             />
           )}
         />

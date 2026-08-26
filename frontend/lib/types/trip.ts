@@ -6,6 +6,8 @@ export interface SelectedLocation {
   longitude: number;
   name: string;
   country: string;
+  /** ISO 3166-1 alpha-2, lowercase. Absent for ocean clicks. */
+  country_code?: string;
 }
 
 /**
@@ -17,6 +19,7 @@ export const MAX_TRIP_DAYS = 30;
 export const tripFormSchema = z.object({
   destination: z.string().min(1, 'Please select a destination on the map'),
   country: z.string().min(1, 'Country is required'),
+  country_code: z.string().optional(),
   latitude: z.number(),
   longitude: z.number(),
   days: z
@@ -30,6 +33,7 @@ export const tripFormSchema = z.object({
   currency: z.string().min(1, 'Please select a currency'),
   travel_month: z.string().min(1, 'Please select a travel month'),
   travel_style: z.string().min(1, 'Please select a travel style'),
+  travel_group: z.string().min(1, "Please select who's traveling"),
   hotel_cost: z.number().nonnegative().optional(),
   food_cost: z.number().nonnegative().optional(),
   transport_cost: z.number().nonnegative().optional(),
@@ -41,6 +45,7 @@ export type TripFormData = z.infer<typeof tripFormSchema>;
 export interface CreateTripRequest {
   destination: string;
   country: string;
+  country_code?: string;
   latitude: number;
   longitude: number;
   days: number;
@@ -48,16 +53,30 @@ export interface CreateTripRequest {
   currency: string;
   travel_month: string;
   travel_style: string;
+  travel_group: string;
   hotel_cost?: number;
   food_cost?: number;
   transport_cost?: number;
   miscellaneous_cost?: number;
 }
 
+/**
+ * A saved trip.
+ *
+ * ⚠️ Rows created before the earlier column migration have `country`,
+ * `travel_month`, `travel_style`, `latitude` and `longitude` as SQL NULL, even
+ * though they are typed non-optional here. Anything that iterates over the full
+ * list (the history browser) must go through the null-safe helpers below rather
+ * than dereferencing those fields directly.
+ */
 export interface Trip {
   id: number;
   destination: string;
   country: string;
+  /** ISO 3166-1 alpha-2, lowercase. Null on rows predating the column. */
+  country_code: string | null;
+  /** ISO 8601. Null on rows predating the column — render nothing, not "now". */
+  created_at: string | null;
   latitude: number;
   longitude: number;
   days: number;
@@ -65,6 +84,12 @@ export interface Trip {
   currency: string;
   travel_month: string;
   travel_style: string;
+  /**
+   * Who's traveling (solo/couple/family) — independent from `travel_style`.
+   * Null on rows predating this column, including ones that used to store
+   * "solo"/"couple"/"family" directly in `travel_style` before it was split out.
+   */
+  travel_group: string | null;
   category: string;
   daily_budget: number;
   hotel_cost: number | null;
@@ -82,6 +107,7 @@ export function tripToFormData(trip: Trip): TripFormData {
   return {
     destination: trip.destination,
     country: trip.country,
+    country_code: trip.country_code ?? undefined,
     latitude: trip.latitude,
     longitude: trip.longitude,
     days: trip.days,
@@ -89,6 +115,7 @@ export function tripToFormData(trip: Trip): TripFormData {
     currency: trip.currency,
     travel_month: trip.travel_month,
     travel_style: trip.travel_style,
+    travel_group: trip.travel_group ?? '',
     hotel_cost: trip.hotel_cost ?? undefined,
     food_cost: trip.food_cost ?? undefined,
     transport_cost: trip.transport_cost ?? undefined,
@@ -106,5 +133,26 @@ export function tripToSelectedLocation(trip: Trip): SelectedLocation {
     longitude: trip.longitude,
     name: trip.destination,
     country: trip.country,
+    country_code: trip.country_code ?? undefined,
   };
+}
+
+/**
+ * The haystack a trip is searched against: destination, country, travel style.
+ *
+ * Centralised so the NULL-tolerance described on `Trip` lives in exactly one
+ * place — a legacy row would otherwise throw on `trip.country.toLowerCase()`.
+ */
+export function tripSearchText(trip: Trip): string {
+  return [trip.destination, trip.country, trip.travel_style, trip.travel_group]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+}
+
+/** Milliseconds for sorting. Rows with no timestamp fall back to id ordering. */
+export function tripCreatedAtMs(trip: Trip): number | null {
+  if (!trip.created_at) return null;
+  const ms = Date.parse(trip.created_at);
+  return Number.isNaN(ms) ? null : ms;
 }

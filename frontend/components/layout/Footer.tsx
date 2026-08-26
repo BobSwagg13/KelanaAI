@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { SquareCode, Mail, MessageCircle, Heart } from 'lucide-react';
+import { SquareCode, Heart } from 'lucide-react';
 
 interface FooterProps {
   className?: string;

@@ -9,6 +9,7 @@
  */
 
 import React from 'react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils/cn';
 
 interface NavbarProps {
@@ -29,7 +30,11 @@ export function Navbar({ className }: NavbarProps) {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo and Brand */}
-          <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+            aria-label="KelanaAI home"
+          >
             <div
               className="flex h-10 w-10 items-center justify-center rounded-lg shadow-md transition-transform hover:scale-105"
               style={{ background: 'var(--brand-gradient)' }}
@@ -54,37 +59,31 @@ export function Navbar({ className }: NavbarProps) {
               <span className="font-display text-xl font-bold tracking-tight text-brand-primary">
                 KelanaAI
               </span>
-              <span className="text-xs text-brand-muted font-medium">
+              <span className="hidden text-xs text-brand-muted font-medium sm:block">
                 AI-Powered Travel Planning
               </span>
             </div>
-          </div>
+          </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center gap-6">
-            <a
-              href="#travel-planner"
-              className="text-sm font-semibold text-brand-muted hover:text-brand-primary transition-colors"
+          {/*
+            Visible at every breakpoint. These were previously `hidden md:flex`
+            behind a hamburger button that had no handler, which would leave
+            History unreachable on mobile.
+          */}
+          <div className="flex items-center gap-4 sm:gap-6">
+            <Link
+              href="/#travel-planner"
+              className="rounded text-sm font-semibold text-brand-muted transition-colors hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             >
               Plan Trip
-            </a>
-
-          </div>
-
-          <button
-            className="md:hidden p-2 rounded-lg text-brand-muted hover:text-brand-primary hover:bg-brand-surface-subtle transition-colors"
-            aria-label="Open menu"
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+            </Link>
+            <Link
+              href="/trips"
+              className="rounded text-sm font-semibold text-brand-muted transition-colors hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+              History
+            </Link>
+          </div>
         </div>
       </div>
     </nav>

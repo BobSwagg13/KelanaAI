@@ -4,7 +4,12 @@ import React from 'react';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 
-export type LoadingStage = 'creating' | 'updating' | 'generating' | 'processing';
+export type LoadingStage =
+  | 'creating'
+  | 'updating'
+  | 'generating'
+  | 'processing'
+  | 'loading';
 
 export interface LoadingStateProps {
   stage: LoadingStage;
@@ -19,6 +24,7 @@ const STAGE_MESSAGES: Record<LoadingStage, string> = {
   updating: 'Updating your trip...',
   generating: 'Generating AI recommendations...',
   processing: 'Processing itinerary...',
+  loading: 'Loading your trip...',
 };
 
 export function LoadingState({

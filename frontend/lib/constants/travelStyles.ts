@@ -6,6 +6,10 @@ export interface TravelStyle {
   budgetRange: string;
 }
 
+/**
+ * Trip pace and budget style. Independent from `TRAVEL_GROUPS` (who's
+ * traveling) — a trip can be both "backpacker" and "family".
+ */
 export const TRAVEL_STYLES: TravelStyle[] = [
   {
     id: 'backpacker',
@@ -20,13 +24,6 @@ export const TRAVEL_STYLES: TravelStyle[] = [
     description: 'Mid-range hotels with a balanced mix of experiences',
     icon: 'Building2',
     budgetRange: '$700 - $2,000',
-  },
-  {
-    id: 'family',
-    name: 'Family',
-    description: 'Family-friendly activities with comfort in mind',
-    icon: 'Users',
-    budgetRange: '$1,000 - $3,000',
   },
   {
     id: 'luxury',
@@ -50,3 +47,9 @@ export const TRAVEL_STYLES: TravelStyle[] = [
     budgetRange: '$700 - $2,000',
   },
 ];
+
+/** Look up a style by its stored id. Returns undefined for unknown/legacy ids. */
+export function getTravelStyle(id: string | null | undefined): TravelStyle | undefined {
+  if (!id) return undefined;
+  return TRAVEL_STYLES.find((style) => style.id === id);
+}

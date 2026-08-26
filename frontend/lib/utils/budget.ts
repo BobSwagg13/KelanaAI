@@ -48,6 +48,23 @@ export function getCurrencySymbol(currency: string): string {
   return SUPPORTED_CURRENCIES.find((c) => c.code === currency)?.symbol || currency;
 }
 
+/**
+ * Compact budget for cards and summaries: `USD 2,000`.
+ *
+ * Distinct from `formatCurrency`, which renders `$2,000.00` (symbol, forced
+ * 2dp) and is used inside the itinerary where exact figures matter. Here the
+ * code disambiguates currencies that share a symbol (JPY and CNY are both ¥),
+ * and whole budgets read better without trailing zeros.
+ */
+export function formatBudget(amount: number | null | undefined, currency: string): string {
+  const value = typeof amount === 'number' && Number.isFinite(amount) ? amount : 0;
+  const formatted = value.toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: Number.isInteger(value) ? 0 : 2,
+  });
+  return `${currency || ''} ${formatted}`.trim();
+}
+
 export function formatCurrency(amount: number, currency: string): string {
   const symbol = getCurrencySymbol(currency);
   const formatted = amount.toLocaleString('en-US', {

@@ -23,8 +23,6 @@ describe('Footer Component', () => {
   it('should render social media links with proper accessibility labels', () => {
     render(<Footer />);
     expect(screen.getByLabelText('GitHub')).toBeInTheDocument();
-    expect(screen.getByLabelText('Twitter')).toBeInTheDocument();
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
   });
 
   it('should have proper ARIA role for accessibility', () => {

@@ -86,12 +86,15 @@ The traveler is planning a trip with the following information:
 - Total Budget: {trip.budget} {trip.currency}
 - Daily Budget: {trip.daily_budget} {trip.currency}
 - Travel Style: {trip.travel_style}
+- Traveling As: {trip.travel_group or "not specified"}
 - Travel Month: {trip.travel_month}
 
 TASK:
 Create a detailed daily travel itinerary for the entire trip, along with
 travel tips, local food recommendations, a budget breakdown, and
-transportation guidance, all matching the traveler's style and budget.
+transportation guidance, all matching the traveler's style, group, and budget.
+If traveling as a family, favor kid-friendly pacing and venues; if a couple,
+favor romantic and scenic choices; if solo, favor flexible, self-paced options.
 
 OUTPUT:
 Return ONLY a single valid JSON object (no markdown, no commentary) with

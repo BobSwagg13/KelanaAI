@@ -16,7 +16,9 @@ interface NominatimResponse {
   };
 }
 
-const CACHE_PREFIX = 'kelanaai_geocode_';
+// v2: entries cached by v1 predate `country_code`, and a stale hit would
+// silently produce a trip with no flag. Bumping the prefix retires them.
+const CACHE_PREFIX = 'kelanaai_geocode_v2_';
 
 function cacheKey(latitude: number, longitude: number): string {
   return `${CACHE_PREFIX}${latitude.toFixed(3)}_${longitude.toFixed(3)}`;
@@ -74,8 +76,16 @@ export async function reverseGeocode(
       'Unknown Location';
 
     const country = data.address.country || 'Unknown Country';
+    // Nominatim returns lowercase alpha-2 ("id", "jp"); absent over open water.
+    const country_code = data.address.country_code || undefined;
 
-    const location: SelectedLocation = { latitude, longitude, name, country };
+    const location: SelectedLocation = {
+      latitude,
+      longitude,
+      name,
+      country,
+      country_code,
+    };
     writeCache(location);
     return location;
   } catch {
