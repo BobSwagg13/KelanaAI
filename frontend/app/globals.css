@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/**
+ * KelanaAI brand theme — a single static blue / white / black palette.
+ * These are plain custom properties read directly via var() by the components.
+ */
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+
+  /* Blue */
+  --brand-primary: #2563eb;        /* blue-600 — primary actions, accents */
+  --brand-primary-hover: #1d4ed8;  /* blue-700 */
+  --brand-accent: #1d4ed8;         /* blue-700 — gradient partner */
+  --brand-accent-soft: #93c5fd;    /* blue-300 — tints, chart segments */
+
+  /* Neutrals */
+  --brand-ink: #0a0a0a;            /* near-black body text */
+  --brand-surface: #ffffff;
+  --brand-surface-subtle: #f8fafc; /* slate-50 — panels, tinted fills */
+  --brand-muted: #6b7280;          /* gray-500 — secondary text */
+  --brand-border: #e5e7eb;         /* gray-200 */
+
+  --brand-gradient: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+  --brand-card-gradient: linear-gradient(to bottom, #f8fafc 0%, transparent 100%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Brand colors as Tailwind utilities (bg-brand-primary, text-brand-ink, ...) */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-primary-hover: var(--brand-primary-hover);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-soft: var(--brand-accent-soft);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-surface-subtle: var(--brand-surface-subtle);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-border: var(--brand-border);
+
+  /* Fonts: Space Grotesk for display/headings, Geist for body copy */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
+
+  --animate-fade-in: fade-in 0.5s ease-in-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+  --animate-pulse-slow: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Headings use the display face and run heavy + tight by default. */
+h1, h2, h3 {
+  font-family: var(--font-display), var(--font-geist-sans), system-ui, sans-serif;
+  letter-spacing: -0.025em;
+}

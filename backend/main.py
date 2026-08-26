@@ -1,196 +1,228 @@
-# PART 1 & 2
-# from services.trip_service import print_trip_summary, get_trip_category, get_travel_session, calculate_daily_budget
+import json
+import logging
+from typing import Optional
 
-
-# print_trip_summary("Tokyo", "Japan", 5, 1500, "USD", "July", "Family", 600, 300, 200, 100)
-# print_trip_summary("Bali", "Indonesia", 3, 800, "USD", "August", "Backpacker", 200, 250, 400, 50)
-
-# tempat_tujuan = ["Tokyo", "Bali", "Paris", "New York", "London", "Sydney", "Rome", "Barcelona", "Dubai", "Singapore"]
-
-# destination = input("Enter your destination: ")
-# country = input("Enter the country: ")
-# days = int(input("Enter the number of days: "))
-# budget = float(input("Enter your budget: "))
-# currency = input("Enter the currency (e.g., USD, EUR): ")
-# travel_month = input("Enter the travel month: ")
-# travel_style = input("Enter your travel style (e.g., Family, Backpacker, Luxury): ")
-# hotel_cost = float(input("Enter the estimated hotel cost: "))
-# food_cost = float(input("Enter the estimated food cost: "))
-# transport_cost = float(input("Enter the estimated transport cost: "))
-# miscellaneous_cost = float(input("Enter the estimated miscellaneous cost: "))
-
-# print_trip_summary(destination, country, days, budget, currency, travel_month, travel_style, hotel_cost, food_cost, transport_cost, miscellaneous_cost, tempat_tujuan)
-
-# PART 3
-from unicodedata import category
-
-from services.trip_service import (
-    calculate_daily_budget,
-    get_trip_category
-)
-from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
-from services.bedrock_service import generate_recommendation
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+
+from database import SessionLocal, init_db
+from models.trip import Trip
+from services.trip_service import calculate_daily_budget, get_trip_category
+from services.bedrock_service import generate_recommendation, RecommendationError
+
+logging.basicConfig(level=logging.INFO)
+
+# Kept in step with the frontend Zod schema. The upper bound keeps the
+# generated itinerary comfortably inside the model's output token budget.
+MAX_TRIP_DAYS = 30
+
 
 class TripRequest(BaseModel):
-	destination: 	str
-	days: 		int
-	budget:		float
+    destination: str
+    country: str
+    latitude: float
+    longitude: float
+    days: int = Field(ge=1, le=MAX_TRIP_DAYS)
+    budget: float = Field(gt=0)
+    currency: str = "USD"
+    travel_month: str
+    travel_style: str
+    hotel_cost: Optional[float] = None
+    food_cost: Optional[float] = None
+    transport_cost: Optional[float] = None
+    miscellaneous_cost: Optional[float] = None
+
 
 app = FastAPI()
 
-@app.get("/")
-def home():
-  return {
-    "message" : "Welcome to KelanaAI"
-  }
-
-
-# POST endpoint — receives JSON, returns JSON
-# @app.post("/api/v1/trips")
-# def create_trip(request: TripRequest):
-#     daily_budget = calculate_daily_budget(
-#         request.budget, request.days
-#     )
-#     category = get_trip_category(
-#         request.budget
-#     )
-#     return {
-#         "destination" : request.destination,
-#         "budget" : request.budget,
-#         "daily_budget" : daily_budget,
-#         "category" : category,
-#     }
-
-@app.get("/api/v1/recommendations")
-def get_recommendations():
-    return {
-        "recommendations": ["Tokyo Tower", "Mount Fuji", "Shibuya"]
-    }
-
-@app.get("/api/v1/transportations")
-def get_transportations():
-    return {
-        "transportations": ["Bus", "Train", "Flight"]
-    }
-
-# PART 4
-from fastapi import FastAPI
-from models.trip import Trip
-from database import SessionLocal, init_db
-
-app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "https://kelanaai.com",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 init_db()
 
-...
+
+def trip_to_dict(trip: Trip) -> dict:
+    ai_recommendation = None
+    if trip.ai_recommendation:
+        try:
+            ai_recommendation = json.loads(trip.ai_recommendation)
+        except (json.JSONDecodeError, TypeError):
+            ai_recommendation = None
+
+    return {
+        "id": trip.id,
+        "destination": trip.destination,
+        "country": trip.country,
+        "latitude": trip.latitude,
+        "longitude": trip.longitude,
+        "days": trip.days,
+        "budget": trip.budget,
+        "currency": trip.currency,
+        "travel_month": trip.travel_month,
+        "travel_style": trip.travel_style,
+        "category": trip.category,
+        "daily_budget": trip.daily_budget,
+        "hotel_cost": trip.hotel_cost,
+        "food_cost": trip.food_cost,
+        "transport_cost": trip.transport_cost,
+        "miscellaneous_cost": trip.miscellaneous_cost,
+        "ai_recommendation": ai_recommendation,
+    }
+
+
+@app.get("/")
+def home():
+    return {"message": "Welcome to KelanaAI"}
+
 
 @app.post("/api/v1/trips")
 def create_trip(request: TripRequest):
-    # reuse Session 2 business logic
     daily_budget = calculate_daily_budget(request.budget, request.days)
-    category     = get_trip_category(request.budget)
+    category = get_trip_category(request.budget)
 
-    # create a Trip ORM object
     trip = Trip(
-        destination  = request.destination,
-        days         = request.days,
-        budget       = request.budget,
-        category     = category,
-        daily_budget = daily_budget,
-        ai_recommendation = None
+        destination=request.destination,
+        country=request.country,
+        latitude=request.latitude,
+        longitude=request.longitude,
+        days=request.days,
+        budget=request.budget,
+        currency=request.currency,
+        travel_month=request.travel_month,
+        travel_style=request.travel_style,
+        category=category,
+        daily_budget=daily_budget,
+        hotel_cost=request.hotel_cost,
+        food_cost=request.food_cost,
+        transport_cost=request.transport_cost,
+        miscellaneous_cost=request.miscellaneous_cost,
+        ai_recommendation=None,
     )
 
-    # save to PostgreSQL
     db = SessionLocal()
-    db.add(trip)
-    db.commit()
-    db.refresh(trip)   # get the auto-generated id
-    db.close()
-    return trip
+    try:
+        db.add(trip)
+        db.commit()
+        db.refresh(trip)
+        return trip_to_dict(trip)
+    finally:
+        db.close()
+
 
 @app.get("/api/v1/trips")
 def list_trips():
     db = SessionLocal()
-    trips = db.query(Trip).all()
-    db.close()
-    return trips
+    try:
+        return [trip_to_dict(trip) for trip in db.query(Trip).all()]
+    finally:
+        db.close()
+
 
 @app.get("/api/v1/trips/{trip_id}")
 def get_trip(trip_id: int):
-
     db = SessionLocal()
+    try:
+        trip = db.query(Trip).filter(Trip.id == trip_id).first()
+        if trip is None:
+            raise HTTPException(status_code=404, detail=f"Trip with id {trip_id} not found")
+        return trip_to_dict(trip)
+    finally:
+        db.close()
 
-    trip = db.query(Trip).filter(Trip.id == trip_id).first()
 
-    db.close()
+@app.put("/api/v1/trips/{trip_id}")
+def update_trip(trip_id: int, request: TripRequest):
+    """Update an existing trip's inputs in place.
 
-    if trip is None:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Trip with id {trip_id} not found"
-        )
+    Used by the edit-and-regenerate flow so that revising a trip does not
+    create a duplicate row. The existing ai_recommendation is left alone; the
+    client calls /generate straight after to overwrite it.
+    """
+    db = SessionLocal()
+    try:
+        trip = db.query(Trip).filter(Trip.id == trip_id).first()
+        if trip is None:
+            raise HTTPException(status_code=404, detail=f"Trip with id {trip_id} not found")
 
-    return trip
+        trip.destination = request.destination
+        trip.country = request.country
+        trip.latitude = request.latitude
+        trip.longitude = request.longitude
+        trip.days = request.days
+        trip.budget = request.budget
+        trip.currency = request.currency
+        trip.travel_month = request.travel_month
+        trip.travel_style = request.travel_style
+        trip.hotel_cost = request.hotel_cost
+        trip.food_cost = request.food_cost
+        trip.transport_cost = request.transport_cost
+        trip.miscellaneous_cost = request.miscellaneous_cost
+
+        # Derived fields must be recomputed from the new budget/days.
+        trip.daily_budget = calculate_daily_budget(request.budget, request.days)
+        trip.category = get_trip_category(request.budget)
+
+        db.commit()
+        db.refresh(trip)
+        return trip_to_dict(trip)
+    finally:
+        db.close()
+
 
 @app.delete("/api/v1/trips/{trip_id}")
 def delete_trip(trip_id: int):
     db = SessionLocal()
-    trip = db.query(Trip).filter(Trip.id == trip_id).first()
-    if trip is None:
+    try:
+        trip = db.query(Trip).filter(Trip.id == trip_id).first()
+        if trip is None:
+            raise HTTPException(status_code=404, detail=f"Trip with id {trip_id} not found")
+        db.delete(trip)
+        db.commit()
+        return {"message": f"Trip with id {trip_id} deleted successfully"}
+    finally:
         db.close()
-        raise HTTPException(status_code=404, detail=f"Trip with id {trip_id} not found")
-    db.delete(trip)
-    db.commit()
-    db.close()
-    return {"message": f"Trip with id {trip_id} deleted successfully"}
 
-@app.put("/api/v1/trips/{trip_id}")
-def update_budget(trip_id: int, request: TripRequest):
-    db = SessionLocal()
-    trip = db.query(Trip).filter(Trip.id == trip_id).first()
-    if trip is None:
-        db.close()
-        raise HTTPException(status_code=404, detail=f"Trip with id {trip_id} not found")
-    daily_budget = calculate_daily_budget(
-            request.budget, trip.days
-        )
-    trip.category = get_trip_category(
-            request.budget
-        )
-    trip.daily_budget = daily_budget
-    db.commit()
-    db.refresh(trip)
-    db.close()
-    return trip
 
 @app.post("/api/v1/trips/{id}/generate")
 def generate_trip_recommendation(id: int):
     db = SessionLocal()
-    # Get trip from database
-    trip = db.query(Trip).filter(Trip.id == id).first()
+    try:
+        trip = db.query(Trip).filter(Trip.id == id).first()
 
-    # Check if trip exists
-    if not trip:
-        raise HTTPException(
-            status_code=404,
-            detail="Trip not found"
-        )
+        if not trip:
+            raise HTTPException(status_code=404, detail="Trip not found")
 
-    # Generate AI recommendation using Bedrock
-    recommendation = generate_recommendation(trip)
+        try:
+            recommendation = generate_recommendation(trip)
+        except RecommendationError as e:
+            # Deliberately not persisted: storing a failed generation would
+            # serve an empty itinerary back on every subsequent read.
+            raise HTTPException(status_code=502, detail=str(e)) from e
 
-    # Save AI recommendation to database
-    trip.ai_recommendation = recommendation
+        trip.ai_recommendation = json.dumps(recommendation)
 
-    db.commit()
-    db.refresh(trip)
+        db.commit()
+        db.refresh(trip)
+        return trip_to_dict(trip)
+    finally:
+        db.close()
 
-    print(recommendation)
 
-    # Return the generated recommendation
-    return {
-        "trip_id": trip.id,
-        "destination": trip.destination,
-        "ai_recommendation": recommendation
-    }
+@app.get("/api/v1/recommendations")
+def get_recommendations():
+    return {"recommendations": ["Tokyo Tower", "Mount Fuji", "Shibuya"]}
+
+
+@app.get("/api/v1/transportations")
+def get_transportations():
+    return {"transportations": ["Bus", "Train", "Flight"]}
+

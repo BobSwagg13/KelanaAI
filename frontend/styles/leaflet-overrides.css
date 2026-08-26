@@ -1,0 +1,132 @@
+/* Leaflet Map Overrides - KelanaAI Custom Styling */
+
+/* Override default Leaflet marker colors with seasonal theme */
+.leaflet-container {
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--brand-surface-subtle);
+}
+
+/* Custom marker styling with seasonal colors */
+.leaflet-marker-icon {
+  filter: hue-rotate(0deg);
+  transition: filter 0.3s ease;
+}
+
+.leaflet-marker-icon.brand-marker {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Popup styling with seasonal theme */
+.leaflet-popup-content-wrapper {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 2px solid var(--brand-primary);
+}
+
+.leaflet-popup-content {
+  margin: 12px 16px;
+  font-size: 14px;
+  color: var(--brand-ink);
+  line-height: 1.5;
+}
+
+.leaflet-popup-tip {
+  background-color: white;
+  border: 2px solid var(--brand-primary);
+}
+
+/* Control buttons with seasonal accent */
+.leaflet-control-zoom a {
+  background-color: white;
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary);
+  transition: all 0.2s ease;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: var(--brand-primary);
+  color: white;
+}
+
+/* Attribution styling */
+.leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.9);
+  font-size: 11px;
+  color: #666;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Loading spinner overlay */
+.leaflet-container .leaflet-tile-pane {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.leaflet-container.loading .leaflet-tile-pane {
+  opacity: 0.6;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .leaflet-popup-content-wrapper {
+    max-width: 250px;
+  }
+  
+  .leaflet-popup-content {
+    margin: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .leaflet-control-zoom a {
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+  }
+}
+
+/* Accessibility improvements */
+.leaflet-control-zoom a:focus,
+.leaflet-popup-close-button:focus {
+  outline: 2px solid var(--brand-accent-soft);
+  outline-offset: 2px;
+}
+
+/* Custom animation for marker placement */
+@keyframes marker-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.leaflet-marker-icon.animate-bounce {
+  animation: marker-bounce 0.6s ease-out;
+}
+
+/* Improve contrast for accessibility (WCAG 2.1 AA) */
+.leaflet-popup-content strong {
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+
+/* Custom selection styling */
+.leaflet-interactive:focus {
+  outline: 2px solid var(--brand-accent-soft);
+  outline-offset: 2px;
+}
+
+/* Touch target improvements for mobile */
+.leaflet-touch .leaflet-control-zoom a {
+  min-width: 44px;
+  min-height: 44px;
+  line-height: 44px;
+}
+
+/* Smooth transitions for map panning */
+.leaflet-container .leaflet-map-pane {
+  transition: transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+}
