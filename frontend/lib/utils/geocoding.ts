@@ -1,19 +1,21 @@
 import type { SelectedLocation } from '@/lib/types/trip';
 import type { AppError } from '@/lib/types/errors';
 
-interface NominatimResponse {
+interface NominatimAddress {
+  country?: string;
+  country_code?: string;
+  city?: string;
+  town?: string;
+  village?: string;
+  state?: string;
+}
+
+interface NominatimPlace {
   place_id: number;
   lat: string;
   lon: string;
   display_name: string;
-  address: {
-    country?: string;
-    country_code?: string;
-    city?: string;
-    town?: string;
-    village?: string;
-    state?: string;
-  };
+  address: NominatimAddress;
 }
 
 // v2: entries cached by v1 predate `country_code`, and a stale hit would
@@ -46,6 +48,10 @@ function writeCache(location: SelectedLocation): void {
   }
 }
 
+function extractName(address: NominatimAddress, fallback: string): string {
+  return address.city || address.town || address.village || address.state || fallback;
+}
+
 export async function reverseGeocode(
   latitude: number,
   longitude: number
@@ -66,15 +72,9 @@ export async function reverseGeocode(
       throw new Error('Geocoding request failed');
     }
 
-    const data: NominatimResponse = await response.json();
+    const data: NominatimPlace = await response.json();
 
-    const name =
-      data.address.city ||
-      data.address.town ||
-      data.address.village ||
-      data.address.state ||
-      'Unknown Location';
-
+    const name = extractName(data.address, 'Unknown Location');
     const country = data.address.country || 'Unknown Country';
     // Nominatim returns lowercase alpha-2 ("id", "jp"); absent over open water.
     const country_code = data.address.country_code || undefined;
@@ -96,4 +96,60 @@ export async function reverseGeocode(
     };
     throw error;
   }
+}
+
+export interface PlaceSearchResult extends SelectedLocation {
+  /** Full location path from Nominatim, to disambiguate similarly-named places. */
+  displayName: string;
+}
+
+const SEARCH_RESULT_LIMIT = 6;
+export const PLACE_SEARCH_MIN_LENGTH = 2;
+
+/**
+ * Forward-search place names via Nominatim, for a type-to-search destination
+ * field. Results are ranked by Nominatim's relevance ordering, which in
+ * practice surfaces the closest-matching names first for partial input (e.g.
+ * "Kyo" -> Kyoto).
+ *
+ * Pass an AbortSignal so a fast typist's earlier request can be cancelled
+ * rather than racing a later one and overwriting its results.
+ */
+export async function searchPlaces(
+  query: string,
+  signal?: AbortSignal
+): Promise<PlaceSearchResult[]> {
+  const trimmed = query.trim();
+  if (trimmed.length < PLACE_SEARCH_MIN_LENGTH) {
+    return [];
+  }
+
+  const url =
+    `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1` +
+    `&limit=${SEARCH_RESULT_LIMIT}&q=${encodeURIComponent(trimmed)}`;
+
+  const response = await fetch(url, {
+    headers: { Accept: 'application/json' },
+    signal,
+  });
+
+  if (!response.ok) {
+    throw new Error('Place search failed');
+  }
+
+  const data: NominatimPlace[] = await response.json();
+
+  return data
+    .filter((place) => place.lat && place.lon)
+    .map((place) => {
+      const fallbackName = place.display_name.split(',')[0]?.trim() || place.display_name;
+      return {
+        latitude: parseFloat(place.lat),
+        longitude: parseFloat(place.lon),
+        name: extractName(place.address, fallbackName),
+        country: place.address.country || 'Unknown Country',
+        country_code: place.address.country_code || undefined,
+        displayName: place.display_name,
+      };
+    });
 }

@@ -1,10 +1,20 @@
-from sqlalchemy import Column, Integer, String, Float, Text, DateTime, func
+from sqlalchemy import Column, Integer, String, Float, Text, DateTime, ForeignKey, func
+from sqlalchemy.orm import relationship
 from database import Base
 
 class Trip(Base):
     __tablename__ = "trips"
 
     id           = Column(Integer, primary_key=True)
+    # Owner. NOT NULL and FK-enforced: every trip belongs to exactly one user,
+    # and the API always sets this from the authenticated token, never from the
+    # request body — otherwise a client could forge ownership.
+    user_id      = Column(
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
     destination  = Column(String,   nullable=False)
     country      = Column(String,   nullable=False)
     # ISO 3166-1 alpha-2, lowercase, as returned by Nominatim. Nullable because
@@ -41,3 +51,5 @@ class Trip(Base):
     created_at = Column(
         DateTime(timezone=True), nullable=True, server_default=func.now()
     )
+
+    user = relationship("User", back_populates="trips")

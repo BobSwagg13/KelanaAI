@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
+import { RequireAuth } from '@/components/auth/RequireAuth';
 import { TripProvider } from '@/components/providers/TripProvider';
 import { TripDetailView } from '@/components/trips/TripDetailView';
 
@@ -21,12 +22,14 @@ export default async function TripDetailPage(props: PageProps<'/trips/[id]'>) {
   }
 
   return (
-    <section className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-      <ErrorBoundary>
-        <TripProvider>
-          <TripDetailView tripId={Number(id)} />
-        </TripProvider>
-      </ErrorBoundary>
-    </section>
+    <RequireAuth>
+      <section className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <ErrorBoundary>
+          <TripProvider>
+            <TripDetailView tripId={Number(id)} />
+          </TripProvider>
+        </ErrorBoundary>
+      </section>
+    </RequireAuth>
   );
 }

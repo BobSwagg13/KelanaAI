@@ -17,9 +17,11 @@ import { cn } from '@/lib/utils/cn';
 
 export interface HeroProps {
   className?: string;
+  /** Personalized greeting shown above the headline when signed in. */
+  greeting?: string;
 }
 
-export function Hero({ className }: HeroProps) {
+export function Hero({ className, greeting }: HeroProps) {
   const taglineVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -72,6 +74,18 @@ export function Hero({ className }: HeroProps) {
             <Compass className="w-12 h-12 text-white" />
           </div>
         </motion.div>
+
+        {greeting && (
+          <motion.p
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-4 text-lg font-semibold text-brand-primary sm:text-xl"
+            data-testid="hero-greeting"
+          >
+            {greeting}
+          </motion.p>
+        )}
 
         <motion.h1
           initial={{ opacity: 0, y: -20 }}

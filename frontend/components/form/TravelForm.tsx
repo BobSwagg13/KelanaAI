@@ -20,6 +20,13 @@ import { Button } from '@/components/shared/Button';
 
 export interface TravelFormProps {
   selectedLocation: SelectedLocation | null;
+  /**
+   * Called when a destination is picked via the search box inside the form.
+   * Shares the same callback the parent passes to DestinationMap, so a typed
+   * selection and a map click update the identical piece of state — no
+   * separate store needed to keep the two in sync.
+   */
+  onLocationSelect?: (location: SelectedLocation) => void;
   onSubmit: (data: TripFormData) => void | Promise<void>;
   isLoading: boolean;
   /** Pre-populate the form, e.g. when editing an existing trip. */
@@ -43,6 +50,7 @@ const EMPTY_DEFAULTS: TripFormData = {
 
 export function TravelForm({
   selectedLocation,
+  onLocationSelect,
   onSubmit,
   isLoading,
   initialValues,
@@ -87,7 +95,7 @@ export function TravelForm({
       className="flex flex-col gap-6 rounded-2xl bg-white p-5 sm:p-8 shadow-sm border border-brand-border"
     >
       <fieldset disabled={isLoading} className="flex flex-col gap-6">
-        <DestinationInput selectedLocation={selectedLocation} />
+        <DestinationInput selectedLocation={selectedLocation} onLocationSelect={onLocationSelect} />
         {errors.destination && (
           <p role="alert" className="-mt-4 text-sm text-red-600">
             {errors.destination.message}

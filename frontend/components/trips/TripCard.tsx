@@ -21,6 +21,7 @@ import { getTravelStyle } from '@/lib/constants/travelStyles';
 import { getTravelGroup } from '@/lib/constants/travelGroups';
 import { formatBudget } from '@/lib/utils/budget';
 import { countryCodeToFlag } from '@/lib/utils/country';
+import { capitalize } from '@/lib/utils/text';
 import type { Trip } from '@/lib/types/trip';
 import { cn } from '@/lib/utils/cn';
 
@@ -104,7 +105,7 @@ export function TripCard({ trip }: TripCardProps) {
             </h3>
             <p className="text-sm text-brand-muted truncate">
               {trip.country ?? 'Unknown country'}
-              {trip.travel_month ? ` · ${trip.travel_month}` : ''}
+              {trip.travel_month ? ` · ${capitalize(trip.travel_month)}` : ''}
             </p>
           </div>
         </div>

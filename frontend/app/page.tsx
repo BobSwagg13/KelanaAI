@@ -8,7 +8,9 @@ import { TravelForm } from '@/components/form/TravelForm';
 import { LoadingState } from '@/components/shared/LoadingState';
 import { ErrorDisplay } from '@/components/shared/ErrorDisplay';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
+import { RequireAuth } from '@/components/auth/RequireAuth';
 import { TripProvider, useTrip } from '@/components/providers/TripProvider';
+import { useAuth } from '@/components/providers/AuthProvider';
 import type { SelectedLocation, TripFormData } from '@/lib/types/trip';
 
 // Leaflet needs `window`, so this may only be imported from a client component.
@@ -23,6 +25,7 @@ const DestinationMap = dynamic(
 function PlannerContent() {
   const router = useRouter();
   const { loading, loadingStage, error, createTrip, retry, dismissError } = useTrip();
+  const { user } = useAuth();
   const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>(null);
 
   // Generation takes ~15-20s. If the user navigates away meanwhile, the resolved
@@ -51,7 +54,7 @@ function PlannerContent() {
 
   return (
     <>
-      <Hero />
+      <Hero greeting={user ? `Welcome back, ${user.name} 👋` : undefined} />
 
       <section
         id="travel-planner"
@@ -69,6 +72,7 @@ function PlannerContent() {
             />
             <TravelForm
               selectedLocation={selectedLocation}
+              onLocationSelect={setSelectedLocation}
               onSubmit={handleCreate}
               isLoading={loading}
             />
@@ -81,10 +85,12 @@ function PlannerContent() {
 
 export default function Home() {
   return (
-    <ErrorBoundary>
-      <TripProvider>
-        <PlannerContent />
-      </TripProvider>
-    </ErrorBoundary>
+    <RequireAuth>
+      <ErrorBoundary>
+        <TripProvider>
+          <PlannerContent />
+        </TripProvider>
+      </ErrorBoundary>
+    </RequireAuth>
   );
 }

@@ -10,6 +10,9 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { LogOut } from 'lucide-react';
+import { useAuth } from '@/components/providers/AuthProvider';
 import { cn } from '@/lib/utils/cn';
 
 interface NavbarProps {
@@ -17,6 +20,17 @@ interface NavbarProps {
 }
 
 export function Navbar({ className }: NavbarProps) {
+  const { user, initializing, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.replace('/login');
+  };
+
+  const linkClass =
+    'rounded text-sm font-semibold text-brand-muted transition-colors hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary';
+
   return (
     <nav
       className={cn(
@@ -70,20 +84,50 @@ export function Navbar({ className }: NavbarProps) {
             behind a hamburger button that had no handler, which would leave
             History unreachable on mobile.
           */}
-          <div className="flex items-center gap-4 sm:gap-6">
-            <Link
-              href="/#travel-planner"
-              className="rounded text-sm font-semibold text-brand-muted transition-colors hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-            >
-              Plan Trip
-            </Link>
-            <Link
-              href="/trips"
-              className="rounded text-sm font-semibold text-brand-muted transition-colors hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-            >
-              History
-            </Link>
-          </div>
+          {/*
+            Rendered only once the session has settled. Showing "Sign in" during
+            initialization would flicker on every reload for a logged-in user.
+          */}
+          {!initializing && (
+            <div className="flex items-center gap-4 sm:gap-6">
+              {user ? (
+                <>
+                  <Link href="/#travel-planner" className={linkClass}>
+                    Plan Trip
+                  </Link>
+                  <Link href="/trips" className={linkClass}>
+                    History
+                  </Link>
+                  <Link href="/profile" className={linkClass} data-testid="nav-profile">
+                    Profile
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    data-testid="nav-logout"
+                    className={cn(linkClass, 'inline-flex items-center gap-1.5')}
+                  >
+                    <LogOut size={15} aria-hidden="true" />
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className={linkClass} data-testid="nav-login">
+                    Sign in
+                  </Link>
+                  <Link
+                    href="/register"
+                    data-testid="nav-register"
+                    className="rounded-full px-4 py-2 text-sm font-semibold text-white shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+                    style={{ background: 'var(--brand-gradient)' }}
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </nav>

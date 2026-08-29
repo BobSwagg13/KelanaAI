@@ -1,33 +1,5 @@
-import axios from 'axios';
 import type { CreateTripRequest, Trip } from '@/lib/types/trip';
-import { createAppError } from '@/lib/types/errors';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  // AI generation measures 14-18s for a typical trip; the edit flow issues an
-  // update and a generate back to back.
-  timeout: 120000,
-});
-
-apiClient.interceptors.request.use(
-  (config) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`API Request: ${config.method?.toUpperCase()} ${config.url}`);
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => Promise.reject(createAppError(error))
-);
+import { apiClient } from './client';
 
 export const tripsApi = {
   createTrip: async (data: CreateTripRequest): Promise<Trip> => {

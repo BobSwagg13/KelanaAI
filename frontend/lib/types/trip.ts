@@ -71,6 +71,8 @@ export interface CreateTripRequest {
  */
 export interface Trip {
   id: number;
+  /** Owner. Set by the API from the auth token, never from the request body. */
+  user_id: number;
   destination: string;
   country: string;
   /** ISO 3166-1 alpha-2, lowercase. Null on rows predating the column. */

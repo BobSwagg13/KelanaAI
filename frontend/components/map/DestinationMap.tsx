@@ -1,8 +1,8 @@
 'use client';
 
 import 'leaflet/dist/leaflet.css';
-import React, { useCallback, useState } from 'react';
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import React, { useCallback, useEffect, useState } from 'react';
+import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { MapMarker } from './MapMarker';
 import { LoadingState } from '@/components/shared/LoadingState';
 import { ErrorDisplay } from '@/components/shared/ErrorDisplay';
@@ -26,6 +26,29 @@ function ClickHandler({ onClick }: { onClick: (lat: number, lng: number) => void
       onClick(e.latlng.lat, e.latlng.lng);
     },
   });
+  return null;
+}
+
+/**
+ * Pans/zooms to a selection made outside the map — typing into the destination
+ * search box. Also fires on a map click, which just re-centers on the point
+ * the user already clicked; `Math.max` avoids zooming OUT if they'd zoomed in
+ * further than city-level.
+ */
+function FlyToSelection({ location }: { location: SelectedLocation | null | undefined }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (location) {
+      map.flyTo([location.latitude, location.longitude], Math.max(map.getZoom(), 10), {
+        duration: 1.2,
+      });
+    }
+    // Only the coordinates should retrigger the flight — `map` is a stable
+    // instance for the container's lifetime.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location?.latitude, location?.longitude]);
+
   return null;
 }
 
@@ -75,6 +98,7 @@ export function DestinationMap({ onLocationSelect, selectedLocation, className }
           url={TILE_URL}
         />
         <ClickHandler onClick={handleClick} />
+        <FlyToSelection location={selectedLocation} />
         {selectedLocation && (
           <MapMarker
             position={[selectedLocation.latitude, selectedLocation.longitude]}

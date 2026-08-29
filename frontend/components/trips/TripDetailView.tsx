@@ -146,6 +146,7 @@ export function TripDetailView({ tripId }: TripDetailViewProps) {
           <DestinationMap onLocationSelect={setEditLocation} selectedLocation={editLocation} />
           <TravelForm
             selectedLocation={editLocation}
+            onLocationSelect={setEditLocation}
             initialValues={tripToFormData(currentTrip)}
             onSubmit={handleSaveAndRegenerate}
             isLoading={loading}
