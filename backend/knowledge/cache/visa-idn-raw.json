@@ -1,0 +1,1812 @@
+{
+  "passport": "IDN",
+  "lang": "en",
+  "fetched_on": "2026-08-31",
+  "source": "https://visa.orizn.app/api/v1/visa",
+  "results": {
+    "SGP": {
+      "data": {
+        "passport": "IDN",
+        "destination": "SGP",
+        "requirement": "visa_free",
+        "visa_free_days": 30,
+        "visa_required": false,
+        "description": "Indonesia citizens can enter Singapore without a visa for a stay of up to 30 days. A valid passport is required.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Return or onward ticket",
+          "Proof of accommodation",
+          "Proof of sufficient funds"
+        ],
+        "process": [
+          "No prior formalities required",
+          "Present valid passport upon arrival",
+          "Entry stamp will be issued at border control"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Extension possible at the ICA.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Immediate",
+        "cost": "Free",
+        "validity": "30 days",
+        "max_stay": "30 days",
+        "country_info": {
+          "currency": "Dollar de Singapour (SGD)",
+          "language": "Anglais, Malais, Mandarin, Tamoul",
+          "timezone": "UTC+8",
+          "capital": "Singapour"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": "https://www.ica.gov.sg/enter-transit-depart/entering-singapore",
+        "last_verified_at": "2026-05-10T13:38:28.613Z",
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 6,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 1,
+          "source": "US State Dept",
+          "details": "",
+          "advisory": "Exercise Normal Precautions",
+          "updated_at": "2025-08-05"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Singapore"
+    },
+    "MYS": {
+      "data": {
+        "passport": "IDN",
+        "destination": "MYS",
+        "requirement": "visa_free",
+        "visa_free_days": 30,
+        "visa_required": false,
+        "description": "Indonesia citizens can enter Malaysia without a visa for a stay of up to 30 days. A valid passport is required.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Return or onward ticket",
+          "Proof of accommodation",
+          "Proof of sufficient funds"
+        ],
+        "process": [
+          "No prior formalities required",
+          "Present valid passport upon arrival",
+          "Entry stamp will be issued at border control"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Extension possible at the Immigration Department of Malaysia.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Immediate",
+        "cost": "Free",
+        "validity": "30 days",
+        "max_stay": "30 days",
+        "country_info": {
+          "currency": "Ringgit (MYR)",
+          "language": "Malais",
+          "timezone": "UTC+8",
+          "capital": "Kuala Lumpur"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": "https://www.imi.gov.my/",
+        "last_verified_at": "2026-05-10T13:38:33.881Z",
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 6,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 1,
+          "source": "US State Dept",
+          "details": "",
+          "advisory": "Exercise Normal Precautions",
+          "updated_at": "2026-05-27"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Malaysia"
+    },
+    "THA": {
+      "data": {
+        "passport": "IDN",
+        "destination": "THA",
+        "requirement": "visa_free",
+        "visa_free_days": 30,
+        "visa_required": false,
+        "description": "Indonesia citizens can enter Thailand without a visa for a stay of up to 30 days. A valid passport is required.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Return or onward ticket",
+          "Proof of accommodation",
+          "Proof of sufficient funds"
+        ],
+        "process": [
+          "No prior formalities required",
+          "Present valid passport upon arrival",
+          "Entry stamp will be issued at border control"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "30-day extension possible at Thai immigration for 1,900 THB.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Immediate",
+        "cost": "Free",
+        "validity": "30 days",
+        "max_stay": "30 days (extendable to 60)",
+        "country_info": {
+          "currency": "Baht (THB)",
+          "language": "Thai",
+          "timezone": "UTC+7",
+          "capital": "Bangkok"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 6,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 2,
+          "source": "US State Dept",
+          "details": "Due to crime and civil unrest in southern provinces",
+          "advisory": "Exercise Increased Caution",
+          "updated_at": "2025-09-20"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Thailand"
+    },
+    "VNM": {
+      "data": {
+        "passport": "IDN",
+        "destination": "VNM",
+        "requirement": "visa_free",
+        "visa_free_days": 30,
+        "visa_required": false,
+        "description": "Indonesia citizens can enter Vietnam without a visa for a stay of up to 30 days. A valid passport is required.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Return or onward ticket",
+          "Proof of accommodation",
+          "Proof of sufficient funds"
+        ],
+        "process": [
+          "No prior formalities required",
+          "Present valid passport upon arrival",
+          "Entry stamp will be issued at border control"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Extension possible via e-Visa or with Vietnamese immigration.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Immediate",
+        "cost": "Free",
+        "validity": "30 days",
+        "max_stay": "30 days",
+        "country_info": {
+          "currency": "Dong (VND)",
+          "language": "Vietnamien",
+          "timezone": "UTC+7",
+          "capital": "Hanoi"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "status": "unavailable",
+          "granularity": "destination",
+          "note": "Transit rules are modelled per transited country, not per passport nationality."
+        },
+        "passport_validity_months": 6,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 1,
+          "source": "US State Dept",
+          "details": "",
+          "advisory": "Exercise Normal Precautions",
+          "updated_at": "2025-09-01"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Vietnam"
+    },
+    "PHL": {
+      "data": {
+        "passport": "IDN",
+        "destination": "PHL",
+        "requirement": "visa_free",
+        "visa_free_days": 30,
+        "visa_required": false,
+        "description": "Indonesia citizens can enter Philippines without a visa for a stay of up to 30 days. A valid passport is required.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Return or onward ticket",
+          "Proof of accommodation",
+          "Proof of sufficient funds"
+        ],
+        "process": [
+          "No prior formalities required",
+          "Present valid passport upon arrival",
+          "Entry stamp will be issued at border control"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Extension possible at the Bureau of Immigration.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Immediate",
+        "cost": "Free",
+        "validity": "30 days",
+        "max_stay": "30 days",
+        "country_info": {
+          "currency": "Peso philippin (PHP)",
+          "language": "Filipino, Anglais",
+          "timezone": "UTC+8",
+          "capital": "Manille"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 6,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 2,
+          "source": "US State Dept",
+          "details": "Due to crime, terrorism, and civil unrest",
+          "advisory": "Exercise Increased Caution",
+          "updated_at": "2025-10-15"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Philippines"
+    },
+    "JPN": {
+      "data": {
+        "passport": "IDN",
+        "destination": "JPN",
+        "requirement": "visa_free",
+        "visa_free_days": 15,
+        "visa_required": false,
+        "description": "Indonesia citizens can enter Japan without a visa for a stay of up to 15 days. A valid passport is required.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Return or onward ticket",
+          "Proof of accommodation",
+          "Proof of sufficient funds"
+        ],
+        "process": [
+          "No prior formalities required",
+          "Present valid passport upon arrival",
+          "Entry stamp will be issued at border control"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "The 15-day stay is not extendable. An e-passport is required for the exemption.",
+          "possible": false
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Immediate",
+        "cost": "Free (e-passport required)",
+        "validity": "15 days",
+        "max_stay": "15 days",
+        "country_info": {
+          "currency": "Yen (JPY)",
+          "language": "Japonais",
+          "timezone": "UTC+9",
+          "capital": "Tokyo"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 0,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 1,
+          "source": "US State Dept",
+          "details": "",
+          "advisory": "Exercise Normal Precautions",
+          "updated_at": "2025-10-01"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Japan"
+    },
+    "KOR": {
+      "data": {
+        "passport": "IDN",
+        "destination": "KOR",
+        "requirement": "visa_required",
+        "visa_free_days": null,
+        "visa_required": true,
+        "description": "Indonesia citizens can enter South Korea without a visa for a stay of up to 30 days. A valid passport is required.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Return or onward ticket",
+          "Proof of accommodation",
+          "Proof of sufficient funds"
+        ],
+        "process": [
+          "No prior formalities required",
+          "Present valid passport upon arrival",
+          "Entry stamp will be issued at border control"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "The 30-day visa-free stay is not extendable.",
+          "possible": false
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Immediate or K-ETA within 24h",
+        "cost": "Free or K-ETA 10,000 KRW",
+        "validity": "30 days",
+        "max_stay": "30 days",
+        "country_info": {
+          "currency": "Won (KRW)",
+          "language": "Coreen",
+          "timezone": "UTC+9",
+          "capital": "Seoul"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 0,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 1,
+          "source": "US State Dept",
+          "details": "",
+          "advisory": "Exercise Normal Precautions",
+          "updated_at": "2025-10-15"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "South Korea"
+    },
+    "CHN": {
+      "data": {
+        "passport": "IDN",
+        "destination": "CHN",
+        "requirement": "visa_required",
+        "visa_free_days": null,
+        "visa_required": true,
+        "description": "Nationals of Indonesia appear neither on the National Immigration Administration's unilateral visa-exemption list nor among the bilateral reciprocal exemption agreements: a visa sticker must be obtained before departure. The application goes through the COVA online form of the Chinese Ministry of Foreign Affairs, then through an in-person submission at a CVASC visa application centre or at the competent consulate. China issues no e-visa, no visa on arrival and no electronic travel authorisation for tourism.",
+        "documents_required": [
+          "Ordinary passport valid for more than 6 months with at least two blank facing pages",
+          "COVA form completed online at visa.mfa.gov.cn, printed, dated and signed by hand",
+          "Recent colour passport photo on a white background, 33 x 48 mm, bare head and face uncovered",
+          "Return flight bookings and hotel confirmations covering the whole stay, or a letter of invitation from a host or a company in China",
+          "Proof of residence status in the country of filing if you are not a national there (residence permit, long-stay visa)",
+          "Old passport or copy of previous Chinese visas, if you have already been issued any",
+          "Additional documents depending on the type applied for: official PU/TE invitation letter for business, JW201/JW202 admission for studies, marriage or birth certificate for family visits"
+        ],
+        "process": [
+          "Complete the COVA form at visa.mfa.gov.cn, generate the application number and print the signed version",
+          "Book an appointment on the portal of the competent CVASC centre (visaforchina.cn); the geographical jurisdiction is strict, each consulate handles only its own district",
+          "Submit the file in person: fingerprints are compulsory for ages 14-70, except for a waiver where a visa was recently issued by the same post",
+          "Pay the consular and service fees, generally when collecting the passport and according to the payment methods accepted by the centre",
+          "Collect the passport with the sticker and immediately check the number of entries, the authorised length of stay and the entry deadline",
+          "On arrival in China, have your place of residence registered within 24 hours: the hotel takes care of it, otherwise you must go to the neighbourhood police station (paichusuo)"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "The extension is applied for on the spot at the exit-entry bureau of the Public Security Bureau (PSB, churuJing guanli) of the city of stay, generally for an additional 30 days and only once. The file must be submitted at least 7 days before the authorised stay expires, with passport, form, photo, proof of residence registration and evidence of the reason for the extension. Processing takes about 7 working days during which the passport stays at the PSB; overstaying is punished by a daily fine, possible detention and a ban on return.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "About 4 working days after filing at the CVASC; paid express options.",
+        "cost": "Fee set by the consulate according to nationality, displayed at payment.",
+        "validity": "3 months to 10 years depending on nationality and consular reciprocity.",
+        "max_stay": "30 or 60 days per entry, as stated on the visa sticker.",
+        "country_info": {
+          "currency": "Yuan renminbi (CNY, ¥)",
+          "language": "Mandarin (putonghua), ecriture en caracteres simplifies ; anglais peu repandu hors grandes villes",
+          "timezone": "UTC+8 (heure de Pekin, fuseau unique pour tout le pays, pas d'heure d'ete)",
+          "capital": "Pekin (Beijing)"
+        },
+        "source": "official",
+        "verified": true,
+        "source_url": "https://en.nia.gov.cn/",
+        "last_verified_at": "2026-05-10T13:37:46.882Z",
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 6,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 2,
+          "source": "US State Dept",
+          "details": "Due to the arbitrary enforcement of local laws and exit bans",
+          "advisory": "Exercise Increased Caution",
+          "updated_at": "2025-11-10"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "China"
+    },
+    "HKG": {
+      "data": {
+        "passport": "IDN",
+        "destination": "HKG",
+        "requirement": "visa_free",
+        "visa_free_days": 30,
+        "visa_required": false,
+        "description": "Indonesia citizens can enter Hong Kong without a visa for a stay of up to 30 days. A valid passport is required.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Return or onward ticket",
+          "Proof of accommodation",
+          "Proof of sufficient funds"
+        ],
+        "process": [
+          "No prior formalities required",
+          "Present valid passport upon arrival",
+          "Entry stamp will be issued at border control"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Extension possible at immigration.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "None",
+        "cost": "Free",
+        "validity": "30 days",
+        "max_stay": "30 days",
+        "country_info": {
+          "currency": "Dollar de Hong Kong (HKD)",
+          "language": "Chinois, Anglais",
+          "timezone": "",
+          "capital": "Hong Kong"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 1,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "remote_work_visa": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 2,
+          "source": "US State Dept",
+          "details": "Due to the arbitrary enforcement of local laws",
+          "advisory": "Exercise Increased Caution",
+          "updated_at": "2025-10-05"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "status": "unavailable",
+          "granularity": "destination"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Hong Kong"
+    },
+    "AUS": {
+      "data": {
+        "passport": "IDN",
+        "destination": "AUS",
+        "requirement": "visa_required",
+        "visa_free_days": null,
+        "visa_required": true,
+        "description": "Indonesia citizens must obtain a visa from the embassy or consulate of Australia before departure.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Completed visa application form",
+          "Recent passport-size photos",
+          "Proof of sufficient funds",
+          "Round-trip flight ticket",
+          "Travel insurance",
+          "Invitation letter or hotel reservation"
+        ],
+        "process": [
+          "Fill out the visa application form",
+          "Gather required documents",
+          "Schedule an appointment at the embassy or consulate",
+          "Submit the application and pay fees",
+          "Wait for processing"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Extension possible online.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "2 to 4 weeks",
+        "cost": "190 AUD",
+        "validity": "Up to 12 months",
+        "max_stay": "3 to 12 months",
+        "country_info": {
+          "currency": "Dollar australien (AUD)",
+          "language": "Anglais",
+          "timezone": "UTC+8 a UTC+11",
+          "capital": "Canberra"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 0,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 1,
+          "source": "US State Dept",
+          "details": "",
+          "advisory": "Exercise Normal Precautions",
+          "updated_at": "2025-10-15"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Australia"
+    },
+    "GBR": {
+      "data": {
+        "passport": "IDN",
+        "destination": "GBR",
+        "requirement": "visa_required",
+        "visa_free_days": null,
+        "visa_required": true,
+        "description": "Indonesia citizens must obtain a visa from the embassy or consulate of United Kingdom before departure.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Completed visa application form",
+          "Recent passport-size photos",
+          "Proof of sufficient funds",
+          "Round-trip flight ticket",
+          "Travel insurance",
+          "Invitation letter or hotel reservation"
+        ],
+        "process": [
+          "Fill out the visa application form",
+          "Gather required documents",
+          "Schedule an appointment at the embassy or consulate",
+          "Submit the application and pay fees",
+          "Wait for processing"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Not extendable.",
+          "possible": false
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "3 weeks",
+        "cost": "115 GBP",
+        "validity": "6 months",
+        "max_stay": "6 months",
+        "country_info": {
+          "currency": "Livre sterling (GBP)",
+          "language": "Anglais",
+          "timezone": "UTC+0 (UTC+1 en ete)",
+          "capital": "Londres"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 0,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 2,
+          "source": "US State Dept",
+          "details": "Due to terrorism",
+          "advisory": "Exercise Increased Caution",
+          "updated_at": "2025-09-15"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "United Kingdom"
+    },
+    "USA": {
+      "data": {
+        "passport": "IDN",
+        "destination": "USA",
+        "requirement": "visa_required",
+        "visa_free_days": null,
+        "visa_required": true,
+        "description": "Indonesia citizens must obtain a visa from the embassy or consulate of United States before departure.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Completed visa application form",
+          "Recent passport-size photos",
+          "Proof of sufficient funds",
+          "Round-trip flight ticket",
+          "Travel insurance",
+          "Invitation letter or hotel reservation"
+        ],
+        "process": [
+          "Fill out the visa application form",
+          "Gather required documents",
+          "Schedule an appointment at the embassy or consulate",
+          "Submit the application and pay fees",
+          "Wait for processing"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Length of stay determined upon arrival (6 months max).",
+          "possible": false
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Variable",
+        "cost": "185 USD",
+        "validity": "Up to 10 years",
+        "max_stay": "6 months maximum",
+        "country_info": {
+          "currency": "Dollar americain (USD)",
+          "language": "Anglais",
+          "timezone": "UTC-5 a UTC-10",
+          "capital": "Washington D.C."
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 0,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "United States"
+    },
+    "SAU": {
+      "data": {
+        "passport": "IDN",
+        "destination": "SAU",
+        "requirement": "visa_required",
+        "visa_free_days": null,
+        "visa_required": true,
+        "description": "Nationals of Indonesia are not on the list of 66 nationalities eligible for the Saudi eVisa published on visa.visitsaudi.com: they must obtain a visa from an embassy or consulate of Saudi Arabia before departure, as the official portal explicitly refers applicants to the nearest mission. The application is filed through the approved processing centre of the country of residence and the visa is affixed in the passport. A derogation route exists for certain holders of a valid visa or residence permit of the United States, the United Kingdom or the Schengen Area, but it remains conditional and does not change the baseline regime attached to nationality.",
+        "documents_required": [
+          "Passport valid for at least six months after the date of arrival, with two blank pages for the sticker and stamps",
+          "Application form completed online (Enjaz portal or the unified ksavisa.sa platform), printed and signed",
+          "Recent identity photographs on a white background, in the format required by the Saudi mission",
+          "Proof of purpose: hotel booking and itinerary for tourism, or a letter of invitation from a Saudi entity for a business trip",
+          "Confirmed return ticket and proof of sufficient funds for the duration of the stay",
+          "Health insurance covering the entire stay in Saudi Arabia",
+          "ACWY meningococcal vaccination certificate for Umrah and Hajj, and proof of polio vaccination if you are coming from an affected country"
+        ],
+        "process": [
+          "Identify the Saudi embassy or consulate with jurisdiction over your country of residence and the approved processing centre to which it delegates submissions",
+          "Complete the application online on the Enjaz portal or ksavisa.sa and print the form with its barcode",
+          "Have the required documents certified: for a business file, the invitation goes through the chamber of commerce and then the ministry of foreign affairs of the issuing country",
+          "Submit the complete file, provide your biometrics and pay the consular fees as well as the centre's service fees",
+          "Collect the passport and check on the sticker the category, the number of entries, the entry deadline and the length of stay granted",
+          "On arrival in Riyadh (RUH), Jeddah (JED), Dammam (DMM) or Medina (MED), pass immigration control with fingerprinting and photograph"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Some visit visas can be extended from within Saudi Arabia by the Saudi sponsor or host through the Absher and Muqeem platforms, before the expiry date and against payment of a fee; the decision remains discretionary. Pilgrimage visas and single-purpose visit visas cannot be extended. Overstaying exposes you to a fine, to deportation and to a re-entry ban, liability being shared with the sponsor.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Set by the competent embassy, from a few working days to several weeks",
+        "cost": "Consular fees and approved centre fees, amounts given by the embassy at submission",
+        "validity": "Validity and number of entries decided case by case and shown on the visa sticker",
+        "max_stay": "Length of stay shown on the visa sticker, counted from the date of entry",
+        "country_info": {
+          "currency": "Riyal saoudien (SAR), indexe sur le dollar americain",
+          "language": "Arabe (langue officielle) ; anglais tres present dans les aeroports et les affaires",
+          "timezone": "UTC+3 (heure d'Arabie), sans changement d'heure saisonnier",
+          "capital": "Riyad"
+        },
+        "source": "official",
+        "verified": true,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "status": "unavailable",
+          "granularity": "destination",
+          "note": "Transit rules are modelled per transited country, not per passport nationality."
+        },
+        "passport_validity_months": 6,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 3,
+          "source": "US State Dept",
+          "details": "Due to terrorism and regional armed conflict",
+          "advisory": "Reconsider Travel",
+          "updated_at": "2026-03-04"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Saudi Arabia"
+    },
+    "ARE": {
+      "data": {
+        "passport": "IDN",
+        "destination": "ARE",
+        "requirement": "visa_required",
+        "visa_free_days": null,
+        "visa_required": true,
+        "description": "Nationals of Indonesia fall under the United Arab Emirates' default regime: they must obtain an entry permit BEFORE departure, and it must be sponsored by a UAE-based entity (airline, hotel, approved travel agency, company or resident relative). The UAE has neither a government self-service e-visa nor an ETA for tourists: the application is filed online, but always through the sponsor or via the ICP smart services. Since 25 June 2026, a few nationalities (India, Indonesia, Vietnam, Thailand, the Philippines, Kenya, South Africa) may instead obtain a paid visa on arrival, provided they hold a valid residence permit from the United States, the EU, the United Kingdom, Singapore, Japan, South Korea, Australia, New Zealand or Canada.",
+        "documents_required": [
+          "Passport valid for at least 6 months on the date of entry, with one blank page",
+          "Recent identity photo on a white background, digital format compliant with the ICP templates",
+          "Proof of the UAE sponsor: confirmed hotel booking, company invitation letter, or copy of the resident relative's Emirates ID",
+          "Return or onward air ticket with fixed dates",
+          "Proof of financial means (bank statements for the last 3 to 6 months depending on the sponsor)",
+          "For the paid visa on arrival: valid residence permit from the USA, the EU, the UK, Singapore, Japan, South Korea, Australia, New Zealand or Canada, valid for at least 6 months",
+          "Travel insurance certificate covering medical expenses in the UAE (required by most sponsors)"
+        ],
+        "process": [
+          "Identify your sponsor: the airline (Emirates, Etihad, flydubai, Air Arabia) at the time of booking, the hotel, an approved UAE agency, or the employer/the resident relative",
+          "File the application via the ICP smart services (icp.gov.ae) or, for a stay in Dubai, via the GDRFA (gdrfad.gov.ae), or let the sponsor file it for you",
+          "Upload passport, photo and supporting documents, then pay the fees online (rates vary according to the duration and the sponsor)",
+          "Track the application with the application number and receive the electronic entry permit by e-mail, with no sticker in the passport",
+          "Print the permit and present it with the passport at check-in and then at immigration; the smart gates open only once entry has been registered",
+          "Paid visa on arrival: go to the dedicated airport counter with the foreign residence permit and pay 100 AED (14 days) or 250 AED (60 days)"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "The 30- and 60-day tourist permits can generally be extended once or twice for 30 days without leaving the country, via the ICP smart services, a typing centre agency or the sponsor, on payment of fees set by the ICP. The application must be filed BEFORE expiry: beyond that, a daily fine accrues automatically and blocks departure until it is paid at the airport. The 14-day paid visa on arrival can be extended once for 14 days; the 60-day one is not systematically extendable.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "3 to 5 working days via ICP or GDRFA, up to 2 weeks in high season",
+        "cost": "Rate set by the sponsor or the ICP, shown at payment; paid VOA 100 or 250 AED",
+        "validity": "Entry permit to be used within 58 to 60 days of issue",
+        "max_stay": "30 or 60 days depending on the permit; 14 or 60 days for the paid VOA",
+        "country_info": {
+          "currency": "Dirham des Émirats arabes unis (AED, souvent noté Dhs) — taux ancré au dollar américain",
+          "language": "Arabe (langue officielle) ; l'anglais est la langue de travail courante, hindi/ourdou et tagalog très répandus",
+          "timezone": "UTC+4 (Gulf Standard Time), pas de changement d'heure saisonnier",
+          "capital": "Abou Dabi (principal aéroport touristique : Dubaï DXB, puis Abou Dabi AUH)"
+        },
+        "source": "official",
+        "verified": true,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 6,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 3,
+          "source": "US State Dept",
+          "details": "Due to terrorism and regional armed conflict",
+          "advisory": "Reconsider Travel",
+          "updated_at": "2026-03-04"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "United Arab Emirates"
+    },
+    "TUR": {
+      "data": {
+        "passport": "IDN",
+        "destination": "TUR",
+        "requirement": "visa_free",
+        "visa_free_days": 30,
+        "visa_required": false,
+        "description": "Indonesia citizens can enter Turkey without a visa for a stay of up to 30 days. A valid passport is required.",
+        "documents_required": [
+          "Valid passport (6 months minimum)",
+          "Return or onward ticket",
+          "Proof of accommodation",
+          "Proof of sufficient funds"
+        ],
+        "process": [
+          "No prior formalities required",
+          "Present valid passport upon arrival",
+          "Entry stamp will be issued at border control"
+        ],
+        "visa_types": [],
+        "extension": {
+          "details": "Possibility to apply for an e-Visa to extend the stay.",
+          "possible": true
+        },
+        "embassy": {
+          "upgrade": "Embassy info requires Pro plan or above"
+        },
+        "tips": [
+          "Upgrade to Pro for travel tips"
+        ],
+        "processing_time": "Immediate",
+        "cost": "Free (30 days)",
+        "validity": "30 days",
+        "max_stay": "30 days",
+        "country_info": {
+          "currency": "Livre turque (TRY)",
+          "language": "Turc",
+          "timezone": "UTC+3",
+          "capital": "Ankara"
+        },
+        "source": "manual",
+        "verified": false,
+        "source_url": null,
+        "last_verified_at": null,
+        "transit_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "passport_validity_months": 5,
+        "visa_fee": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "processing_days": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "photo_specs": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "vaccinations_required": {
+          "status": "unavailable",
+          "granularity": "destination"
+        },
+        "insurance_required": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "dual_nationality_warnings": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "stamp_warnings": {
+          "status": "unavailable",
+          "granularity": "passport"
+        },
+        "minor_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "overstay_penalty": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "entry_by_mode": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "remote_work_visa": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "extension_rules": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "reciprocity_history": {
+          "status": "unavailable",
+          "granularity": "passport",
+          "note": "Policy-change history is modelled per passport, not per passport/destination pair."
+        },
+        "safety": {
+          "granularity": "destination",
+          "as_of": "2026-05-27",
+          "level": 2,
+          "source": "US State Dept",
+          "details": "Due to terrorism and arbitrary detentions",
+          "advisory": "Exercise Increased Caution",
+          "updated_at": "2025-11-05"
+        },
+        "best_apply_period": {
+          "upgrade": "Available on Starter plan or above"
+        },
+        "health_requirements": {
+          "upgrade": "Available on Starter plan or above"
+        }
+      },
+      "license": "evaluation — free plan is licensed for non-commercial use only. Commercial license: https://visa.orizn.app/visa-api",
+      "meta": {
+        "lang": "en",
+        "api_version": "1.0",
+        "coverage": "199 passports x 238 destinations",
+        "languages": 15,
+        "powered_by": "Orizn Visa API"
+      },
+      "_http_status": 200,
+      "_name": "Turkey"
+    }
+  }
+}

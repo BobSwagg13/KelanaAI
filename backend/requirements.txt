@@ -7,3 +7,4 @@ boto3==1.43.56
 python-jose[cryptography] # JWT encode/decode for auth
 bcrypt # password hashing
 email-validator # backs pydantic's EmailStr
+fpdf2 # knowledge/compare_rag.py renders the RAG-vs-base report to PDF

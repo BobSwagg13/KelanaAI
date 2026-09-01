@@ -13,6 +13,7 @@ from models.trip import Trip
 from models.user import User
 from services.trip_service import calculate_daily_budget, get_trip_category
 from services.bedrock_service import generate_recommendation, RecommendationError
+from services.kb_service import ask_knowledge_base, KnowledgeBaseError
 from services.auth_service import (
     AuthError,
     MIN_PASSWORD_LENGTH,
@@ -39,6 +40,10 @@ class RegisterRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+
+class QuestionRequest(BaseModel):
+    question: str = Field(min_length=3, max_length=500)
 
 
 class TripRequest(BaseModel):
@@ -392,6 +397,27 @@ def generate_trip_recommendation(
     db.commit()
     db.refresh(trip)
     return trip_to_dict(trip)
+
+
+@app.post("/api/v1/ask")
+def ask_assistant(
+    request: QuestionRequest,
+    user: User = Depends(get_current_user),
+):
+    """Answer a travel question grounded in the knowledge base.
+
+    One-shot: no conversation state is kept between calls. Requires a session
+    like every other non-auth endpoint. The answer is not persisted; each call
+    re-retrieves and re-generates.
+    """
+    try:
+        result = ask_knowledge_base(request.question)
+    except KnowledgeBaseError as e:
+        # Nothing usable came back from retrieval or generation. Surfaced as a
+        # bad-gateway rather than persisted, same rule as the itinerary path.
+        raise HTTPException(status_code=502, detail=str(e)) from e
+
+    return {"question": request.question, **result}
 
 
 @app.get("/api/v1/recommendations")

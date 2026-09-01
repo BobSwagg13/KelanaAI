@@ -1,0 +1,170 @@
+{
+  "generated_at": "2026-09-01T17:22:52+00:00",
+  "region": "ap-southeast-2",
+  "knowledge_base_id": "EW7EM5BPON",
+  "generation_model": "amazon.nova-lite-v1:0",
+  "method": "RAG path: bedrock-agent-runtime.retrieve (managed KB, top 5) then bedrock-runtime.converse with the passages prepended. Base path: the same converse call with the bare question. Same model (amazon.nova-lite-v1:0), same inference config (maxTokens=1024, temperature=0.7); retrieval is the only difference.",
+  "items": [
+    {
+      "question": "As an Indonesian traveller, how can I pay merchants abroad by scanning a QR code without exchanging cash? Which countries and local QR schemes support this, and which Indonesian apps can I use?",
+      "rag_answer": "As an Indonesian traveler, you can pay merchants abroad by scanning a QR code without exchanging cash using Cross-Border QRIS. Here are the countries and local QR schemes that support this, along with the Indonesian apps you can use:\n\n1. **Thailand:** You can scan PromptPay QR codes. This is supported by major banks including Bangkok Bank, Kasikornbank, SCB, and Krungthai Bank.\n2. **Malaysia:** You can scan DuitNow QR codes. This is supported across national retail stores, supermarkets, and dining outlets partnered with PayNet Malaysia.\n3. **Singapore:** You can scan NETS QR or SGQR displaying the NETS logo. This is accepted across thousands of merchants, hawker centers, and retail stores island-wide.\n\nYou can use any Indonesian participating mobile banking app or licensed e-wallet such as BCA mobile/myBCA, Livin' by Mandiri, BRImo, BNI Mobile, GoPay, Dana, OVO, or ShopeePay to make these transactions. \n\nHere is how you transact using Cross-Border QRIS:\n1. Open any Indonesian participating mobile banking app or licensed e-wallet.\n2. Tap the Scan QR / QRIS button within the application.\n3. Point your smartphone camera at the overseas merchant's local QR code (PromptPay in Thailand, DuitNow in Malaysia, NETS in Singapore).\n4. Enter the required transaction amount in the local foreign currency.\n5. The application will instantly display the real-time conversion into Indonesian Rupiah (IDR) based on competitive Bank Indonesia interbank exchange rates without extra markup.\n6. Verify merchant name and amount, enter your transaction PIN, and the payment is completed.",
+      "rag_sources": [
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/indonesian-traveler-payment-guide.md",
+          "document": "indonesian-traveler-payment-guide.md",
+          "score": 0.9357357025146484,
+          "snippet": "# International Payments, QRIS Cross-Border & Foreign Currency Guide for Indonesian Travelers **Bank Indonesia Cross-Border QRIS Interoperability:** Bank Indonesia (BI), in partnership with payment system associations (ASPI) and central banks across Southeast Asia and Asia-Pacific, has officially launched Cross-Border QRIS (QRIS Antarnegara). Indonesian travelers can make direct cashless payments "
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/indonesian-traveler-payment-guide.md",
+          "document": "indonesian-traveler-payment-guide.md",
+          "score": 0.8699384927749634,
+          "snippet": "4. Additional Networks: Bilateral payment connectivity and merchant testing are progressively rolling out with China (UnionPay / Alipay partnerships), Japan (JPQR Global integration), and South Korea. **How to Transact Using Cross-Border QRIS:** The payment workflow is seamless and requires no physical foreign currency exchange: 1. Open any Indonesian participating mobile banking app (such as BCA "
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/indonesian-traveler-payment-guide.md",
+          "document": "indonesian-traveler-payment-guide.md",
+          "score": 0.6602480411529541,
+          "snippet": "**Benefits Over Traditional Currency Exchange:** - Zero Physical Cash Risk: Eliminates the risk of theft or counterfeit foreign banknotes. - Transparent Direct Exchange Rates: Conversions bypass predatory exchange margins frequently charged by airport currency exchange counters. - No Minimum Transaction Amount: Ideal for small purchases (such as street food, public transport tickets, or convenienc"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/indonesian-traveler-payment-guide.md",
+          "document": "indonesian-traveler-payment-guide.md",
+          "score": 0.37843406200408936,
+          "snippet": "**Bank Indonesia Physical Cash and Currency Regulations:** Under Bank Indonesia Regulation No. 4/8/PBI/2002 concerning the Requirements and Procedures for Carrying Banknotes into or out of the Customs Territory of the Republic of Indonesia: - Carrying physical cash in Indonesian Rupiah or equivalent foreign currency amounting to Rp 100,000,000 (one hundred million IDR) or more requires mandatory w"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "document": "original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "score": 0.3651905953884125,
+          "snippet": "The code can be scanned using any smartphone camera or dedicated QR code reader application to access the encoded information. The QR code format allows for flexible data capacity, error correction, and reliable scanning even if partially obscured or printed at various sizes, making it ideal for travel guide applications where users may be scanning with various devices and in different lighting co"
+        }
+      ],
+      "base_answer": "As an Indonesian traveler, you have several options for paying merchants abroad using QR codes without needing to exchange cash. Here’s a detailed guide on countries, local QR schemes, and Indonesian apps you can use:\n\n### Countries and Local QR Schemes\n\n1. **Japan**\n   - **QR Code Payment Systems:** Japan has several QR code payment systems supported by major banks and fintech companies. Some of the prominent ones include:\n     - **PayPay**\n     - **LINE Pay**\n     - **Merpay (for Rakuten)**\n     - **d払い (d payment)**\n     - **au PAY**\n     - **FamiPay**\n\n2. **Singapore**\n   - **QR Code Payment Systems:** Singapore has widely adopted QR code payments through various banks and fintech companies. Notable systems include:\n     - **PayLah!**\n     - **FavePay**\n     - **GrabPay**\n     - **Zingg by POSB**\n     - **DBS PayLah!**\n\n3. **Thailand**\n   - **QR Code Payment Systems:** Thailand supports various QR code payment systems, including:\n     - **TrueMoney Wallet**\n     - **Krungsri Pay**\n     - **Line Pay**\n     - **Rabbit Line Pay**\n     - **OCBC Tap & Go**\n\n4. **South Korea**\n   - **QR Code Payment Systems:** South Korea has popular QR code payment options such as:\n     - **Kakao Pay**\n     - **Naver Pay**\n     - ** Toss Pay**\n\n5. **Malaysia**\n   - **QR Code Payment Systems:** Malaysia has several QR code payment systems:\n     - **Touch ‘n Go eWallet**\n     - **GrabPay**\n     - **FamPay**\n     - **Boost**\n\n6. **Philippines**\n   - **QR Code Payment Systems:** The Philippines has various QR code payment options:\n     - **GCash**\n     - **PayMaya**\n     - **UnionPay QR**\n\n### Indonesian Apps for QR Code Payments Abroad\n\nHere are some Indonesian apps that support QR code payments and can be used abroad:\n\n1. **OVO**\n   - **Features:** OVO supports various international QR code payment systems. It’s integrated with global payment networks, making it easy to use in many countries.\n   - **Supported Countries:** Japan, Singapore, Thailand, Malaysia, and others.\n\n2. **GoPay**\n   - **Features:** GoPay, linked to Gojek, offers a range of payment options including QR code payments.\n   - **Supported Countries:** Available in Indonesia and expanding internationally.\n\n3. **DANA**\n   - **Features:** DANA offers QR code payments and is increasingly being accepted in various countries.\n   - **Supported Countries:** Indonesia and some neighboring countries.\n\n4. **LinkAja**\n   - **Features:** This app is linked to the Indonesian state-owned banks and supports QR code payments.\n   - **Supported Countries:** Primarily in Indonesia, but it’s expanding.\n\n### Using Indonesian Apps Abroad\n\n1. **Adding Funds:** Before you travel, ensure you have sufficient funds in your Indonesian app. Some apps may allow you to add funds via international bank transfers or other methods.\n\n2. **International Use:** Check if the app supports international transactions. Most modern Indonesian fintech apps have this feature, but it’s always good to verify.\n\n3. **Offline Mode:** Some apps offer an offline mode where you can pay using QR codes without an internet connection. This can be useful if you’re in areas with poor connectivity.\n\n4. **Partnerships:** Many Indonesian apps have partnerships with international QR payment systems. Make sure to check the app’s website or contact customer support for a list of supported countries and schemes.\n\n### Tips for Using QR Code Payments Abroad\n\n- **Check Fees:** Be aware of any additional fees for international transactions.\n- **Currency Conversion:** Understand the currency conversion rates to avoid any surprises.\n- **Security:** Use secure devices and ensure your app has the latest security updates.\n- **Backup Options:** Have a backup payment method in case your primary app doesn’t work in a particular country.\n\nBy using these apps and understanding the local QR code payment systems in the countries you visit, you can seamlessly pay for goods and services without needing to exchange cash."
+    },
+    {
+      "question": "I'm an Indonesian resident flying home with a new phone and a new laptop I bought overseas. What is the duty-free allowance, how many devices can I register for IMEI per arrival, and what taxes apply to the excess?",
+      "rag_answer": "Based on the reference passages:\n\n1. **Duty-Free Allowance**:\n   - The duty-free allowance for personal goods per passenger per arrival is up to USD 500. This is mentioned in passages [1], [2], and [3].\n\n2. **IMEI Registration for Devices**:\n   - Each traveler is permitted to register a maximum of two (2) devices per arrival. This information is provided in passage [1].\n\n3. **Taxes on the Excess**:\n   - If the device value exceeds USD 500 and is registered at the airport customs terminal before exiting the customs control area, the excess value above USD 500 is subject to:\n     - **Import Duty (Bea Masuk)**: 10% of the customs value (nilai pabean).\n     - **Value Added Tax (PPN)**: 11% of the import value.\n   - These details are found in passage [1].\n\nFor your specific case of bringing a new phone and a new laptop:\n- Both devices will be considered under your duty-free allowance of up to USD 500 if their combined value is USD 500 or less.\n- If their combined value exceeds USD 500, you will need to register both devices at the airport customs terminal before exiting the customs control area to avoid losing the USD 500 exemption. The excess value above USD 500 will then be subject to the aforementioned import duty and VAT.",
+      "rag_sources": [
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/indonesia-customs-and-imei-guide.md",
+          "document": "indonesia-customs-and-imei-guide.md",
+          "score": 0.91413414478302,
+          "snippet": "Non-personal goods (goods intended for commercial sale or entrusted by others) do not receive the USD 500 exemption and are taxed on full value. **IMEI Registration Rules for Purchased Smartphones, Handheld Computers, and Tablets:** International travelers bringing new mobile phones, tablets, or cellular devices purchased abroad into Indonesia must register the device IMEI numbers to access Indone"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/indonesia-customs-and-imei-guide.md",
+          "document": "indonesia-customs-and-imei-guide.md",
+          "score": 0.8717987537384033,
+          "snippet": "# Indonesia Customs & IMEI Registration Guide for International Travelers **Official Legal Basis:** Indonesian customs clearance for international passenger baggage is regulated under Minister of Finance Regulation (PMK) No. 203/PMK.04/2017 concerning the Export and Import of Goods Carried by Passengers, and Director General of Customs and Excise Regulation No. PER-13/BC/2021 jo. PER-7/BC/2023 reg"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/indonesia-customs-and-imei-guide.md",
+          "document": "indonesia-customs-and-imei-guide.md",
+          "score": 0.7636104822158813,
+          "snippet": "- Import Duty (Bea Masuk): 10% of customs value (nilai pabean). - Value Added Tax (PPN): 11% of import value. - Income Tax (PPh Pasal 22 Impor): 10% for passengers holding an active Indonesian Tax Identification Number (NPWP/NIK terintegrasi), or 20% for passengers without an NPWP. Registration carried out after exiting the airport customs area (within 60 days of arrival at a local customs office)"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/indonesia-customs-and-imei-guide.md",
+          "document": "indonesia-customs-and-imei-guide.md",
+          "score": 0.6175001263618469,
+          "snippet": "Per passenger of legal age (21 years or older), customs grants duty-free exemption for personal consumption up to: - Maximum 200 cigarettes, 25 cigars, or 100 grams of sliced tobacco. - Maximum 1 liter (1,000 ml) of alcoholic beverages. Any excess excise goods exceeding these limits will be seized and destroyed by customs officers on site. **Physical Cash and Currency Declaration Threshold:** Pass"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/indonesian-traveler-payment-guide.md",
+          "document": "indonesian-traveler-payment-guide.md",
+          "score": 0.37905195355415344,
+          "snippet": "**Bank Indonesia Physical Cash and Currency Regulations:** Under Bank Indonesia Regulation No. 4/8/PBI/2002 concerning the Requirements and Procedures for Carrying Banknotes into or out of the Customs Territory of the Republic of Indonesia: - Carrying physical cash in Indonesian Rupiah or equivalent foreign currency amounting to Rp 100,000,000 (one hundred million IDR) or more requires mandatory w"
+        }
+      ],
+      "base_answer": "When traveling to Indonesia with new electronic devices such as a phone and a laptop, there are specific regulations and allowances you should be aware of regarding duty-free imports, IMEI registration, and applicable taxes. Here's a breakdown of what you need to know:\n\n### Duty-Free Allowance\nIndonesia has a duty-free allowance for personal belongings brought into the country. As of the latest information available, the duty-free limit for Indonesian residents returning from overseas is generally as follows:\n\n- **General Items:** Duty-free up to a total value of approximately USD 500 (or equivalent in other currencies).\n  \n- **Specific to Electronics:** For electronics, this includes items like a laptop and a phone.\n\n### IMEI Registration\nIn Indonesia, the authorities require the registration of the IMEI (International Mobile Equipment Identity) numbers for all new mobile devices. Here's what you need to know about IMEI registration:\n\n- **One Device Per Arrival:** You are allowed to register up to one new mobile device per arrival into Indonesia. If you have more than one device, you will need to register each one separately if arriving on different occasions.\n\n### Taxes on Excess Items\nIf your devices exceed the duty-free allowance or if you are bringing in more devices than the allowed limit, you will need to pay import taxes and potentially customs duties. The tax rates can vary but generally include:\n\n- **Import Tax (PPN Import):** Typically around 5-10% of the value of the items.\n  \n- **Value-Added Tax (PPN MB):** This is usually around 10% of the total value (import tax + assessed value).\n\n- **Customs Duties:** Depending on the specific type of electronic device, customs duties can range from 0% to 5%.\n\n### Practical Steps\n1. **Declare All Items:** When you arrive in Indonesia, declare all your electronic devices at customs. Ensure you have all purchase receipts and original packaging to prove the value and nature of the items.\n\n2. **Register IMEI:** Within 30 days of arrival, register the IMEI numbers of your devices with the local authorities. Failure to register can result in fines or confiscation of the devices.\n\n3. **Pay Taxes if Necessary:** If your devices exceed the duty-free limit, be prepared to pay the applicable taxes and duties at the customs office.\n\nFor the most accurate and up-to-date information, it's recommended to check with the Indonesian Customs and Excise office or visit their official website before your travel. Additionally, consulting with a local customs broker can help ensure compliance and smooth processing of your devices."
+    },
+    {
+      "question": "According to the Japanese government's official checklist, which documents must a tourist submit for a single-entry short-term-stay visa, and does that checklist apply to every nationality?",
+      "rag_answer": "According to the Japanese government's official checklist for a \"Single-Entry Short-Term Stay Visa\" in April 2025, the required documents include:\n\n1. **Letter of guarantee (p.8)**\n2. **Certified copy of the corporation register or Overview of company/organization (p.9)**\n   - Not required if the company is listed on the stock exchange and submits its quarterly corporate report.\n   - If the guarantor is an individual, a Certificate of employment can be submitted instead.\n3. **Proof of funds of the guarantor (at least one of the following):**\n   - Certificate of income (the previous year's gross income must be included) issued by the head of administration of the place of residence.\n   - Tax return (Form 2) issued by the director of the tax office.\n   - Balance certificate.\n   - Certificate of residence (Juminhyo).\n4. **Valid Passport**\n5. **Visa application form**\n6. **Photo**\n7. **Flight itinerary** with the flight/ship number and date of arrival and departure to and from Japan.\n8. **Income certificate** to prove the ability to pay travel expenses during the stay in Japan.\n\nHowever, it is important to note that this checklist \"does not apply to every nationality.\" Specifically, it does not apply to China, Russia, CIS Countries, Ukraine, Georgia, and the Philippines.",
+      "rag_sources": [
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/single-entry-short-term-visa-japan.pdf",
+          "document": "single-entry-short-term-visa-japan.pdf",
+          "score": 0.5970211029052734,
+          "snippet": "April 2025 Checklist for \"Single-Entry Short-Term Stay Visa\" April 2025 for all nationalities except China, Russia, CIS Countries, Ukraine, Georgia, and the Philippines It is not permitted to perform any activities to undertake revenue-generating business operations or to receive remuneration in Japan. Purpose of Visit Short-Term Business Affairs, etc. Attending meetings/conferences, business comm"
+        }
+      ],
+      "base_answer": "When applying for a single-entry short-term-stay visa to Japan, the required documents generally include:\n\n1. **Visa Application Form**: Properly filled out and signed.\n2. **Passport**: Valid for at least six months beyond the intended period of stay, with at least two blank visa pages.\n3. **Passport-sized Photographs**: Usually two recent passport-sized photos with a white background.\n4. **Invitation Letter**: If applicable, from a host in Japan (such as an individual, company, or organization).\n5. **Travel Itinerary**: A copy of round-trip flight reservations.\n6. **Accommodation Proof**: Reservation confirmation for hotels, ryokans, or other accommodations.\n7. **Financial Proof**: Evidence of sufficient funds to cover the stay (e.g., bank statements, credit card statements).\n8. **Visa Fee**: Payment receipt for the visa application fee.\n\nHowever, specific requirements can vary slightly depending on the nationality of the applicant and the purpose of the visit (tourism, business, visiting family, etc.). For instance, nationals from certain countries may need to provide additional documentation like employment verification, proof of marital status, or a detailed itinerary.\n\nIt is important to check the specific requirements on the official website of the Japanese Embassy or Consulate in your country, as they can provide the most accurate and detailed checklist tailored to your nationality and purpose of visit. The checklist is not universally identical for every nationality, as Japan may have specific requirements for certain countries based on bilateral agreements and historical context."
+    },
+    {
+      "question": "If I take a private tour to North Korea with Koryo Tours, which items are prohibited from being brought into the country, and may I carry a printed guidebook about the DPRK?",
+      "rag_answer": "Based on the reference passages, the items prohibited from being brought into North Korea include:\n\n- Religious materials\n- Media of all kinds about Korea or in the Korean language\n- Illicit drugs\n- Pornography\n\nAdditionally, DPRK customs prohibit written materials, printed and electronic, about the DPRK from entry into the country. Therefore, you may not carry a printed guidebook about the DPRK.",
+      "rag_sources": [
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "document": "original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "score": 0.7717752456665039,
+          "snippet": "Like anywhere, the availability of services are subject to change based on local conditions and opening times. Please consult us for the most current information. Our private tours specialists are here to assist in creating the best possible itinerary based on your interests and requests. We regularly travel to the DPRK on a monthly basis with group tours and/or for site inspections. Important Ple"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "document": "original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "score": 0.7419216632843018,
+          "snippet": "The immediate purpose of the guide is to assist in planning your private tour to the DPRK. It may also be of interest to travelers on our group tours and those simply curious about this country. It is our suggestion that if you are interested in a private tour to the DPRK that you first have a look through this guide and use it to form a wish list of places you would like to visit. Our expert staf"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "document": "original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "score": 0.723115861415863,
+          "snippet": "DPRK customs prohibits written materials, printed and electronic, about the DPRK from entry into the country. We hope you enjoy reading our introductory guide to travel in the DPRK. Koryo Tours, Beijing, 2018"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "document": "original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "score": 0.721109926700592,
+          "snippet": "Important Please note this guide is not for use during travel in North Korea. North Korea customs prohibits written materials, printed and electronic, about the DPRK from entry into the country. INTRODUCTION Tolerant even towards its clichés, Korea greeted us with morning calm - Chris Marker in Coréennes, 1959 The Democratic People's Republic of Korea, the DPRK, North Korea, Choson, 'The Land of t"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "document": "original-Koryo_Tours_North_Korea_Guide_2019.pdf",
+          "score": 0.4825117588043213,
+          "snippet": "PAEKDU ATTRACTIONS & ACCOMODATION 61 THE NORTHEAST 64 CHONGJIN 65 MT. CHILBO 66 KYONGSONG 67 HOERYONG 69 RASON 70 4 THE PRIVATE TOUR Why go on a private tour? Our private independent tours are a great way to travel to North Korea if you want to have a more personal experience, fix your own dates, travel at your own pace or explore specific aspects of this fascinating and complex country. How do I "
+        }
+      ],
+      "base_answer": "When traveling to North Korea with Koryo Tours or any other tour operator, it is crucial to be aware of the strict regulations regarding what items are prohibited from being brought into the country. Here are some general guidelines, although specific restrictions may change, so always check the most current information:\n\n### Prohibited Items:\n1. **Political Literature**: Any material deemed anti-state or critical of the North Korean government, including books, pamphlets, newspapers, magazines, and other printed materials.\n2. **Religious Materials**: Bibles, crosses, and other religious artifacts are strictly prohibited.\n3. **Pornographic Materials**: Any sexually explicit books, magazines, or films.\n4. **Drugs and Contraband**: Illegal drugs and other contraband items are absolutely forbidden.\n5. **Weapons**: Any form of weapon, including knives and even certain types of pepper spray.\n6. **Cameras and Recording Devices**: While you may be allowed to bring a basic camera, advanced cameras, professional audio or video recording equipment, and any form of recording device (like a smartphone with video capabilities) are typically restricted or outright banned.\n7. **Unauthorized Technology**: Some electronics, particularly those with internet capabilities or GPS, may be restricted.\n8. **Personalized Items**: Items with personal inscriptions, especially those that could be seen as politically sensitive or critical.\n\n### Allowed Items:\n- **Basic Personal Items**: Clothing, toiletries, and basic medications (with prescriptions).\n- **Printed Guidebooks**: Generally, printed guidebooks about North Korea are permitted as long as they are not politically subversive or critical of the state. However, it's always best to check with your tour operator or North Korean authorities to ensure the guidebook you wish to bring does not contain prohibited content.\n\n### Carrying a Printed Guidebook:\nA printed guidebook about the DPRK is usually allowed, provided it does not contain any content that is deemed politically subversive or critical of the North Korean government. The guidebook should be purely informative and factual, focusing on the history, culture, geography, and other non-controversial topics. However, it's always a good idea to confirm with your tour operator or the North Korean authorities before you travel to ensure compliance with the latest regulations.\n\n### Final Tips:\n- Always double-check the latest regulations with your tour operator before departure.\n- Declare all items at customs and be prepared for inspections.\n- Follow your guide's instructions and the rules set by your tour operator and North Korean authorities at all times.\n\nTraveling to North Korea requires careful preparation and adherence to strict rules to ensure a safe and compliant visit."
+    },
+    {
+      "question": "What is the estimated daily budget for a backpacker in Kyoto, broken down into accommodation, food, transport, and attractions?",
+      "rag_answer": "For a backpacker in Kyoto, the estimated daily budget is broken down as follows:\n\n* **Accommodation:** $25 - $50 / night\n* **Food:** $15 - $30 / day\n* **Transport:** $5 - $8 / day\n* **Attractions:** $10 - $15 / day\n\nThis information is sourced from the \"Kyoto_Travel_Guide_EN.md\" document under the section \"ð??° 5. Cost Estimation: Budget to Luxury.\"",
+      "rag_sources": [
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/Kyoto_Travel_Guide_EN.md",
+          "document": "Kyoto_Travel_Guide_EN.md",
+          "score": 0.8350191712379456,
+          "snippet": "## ð??° 5. Cost Estimation: Budget to Luxury *Note: Prices are estimates per person and can vary based on season and exchange rates. (Prices estimated in USD).* ### ð??? Budget / Backpacker Style * **Accommodation:** $25 - $50 / night (Hostels, capsule hotels, or budget guesthouses). * **Food:** $15 - $30 / day (Convenience store breakfasts, noodle shops like Marugame Seimen, and Nishiki Market sn"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/Tokyo_Travel_Guide_EN.md",
+          "document": "Tokyo_Travel_Guide_EN.md",
+          "score": 0.7236195802688599,
+          "snippet": ".* ### ð??? Budget / Backpacker Style * **Accommodation:** $30 - $60 / night (Capsule hotels, modern hostels, or budget business hotels in outer wards). * **Food:** $15 - $30 / day (Convenience store meals like 7-Eleven onigiri, Soba/Udon chains, gyudon bowls at Matsuya/Sukiya). * **Transport:** $6 - $12 / day (Basic Suica card rides on JR and subway lines). * **Attractions:** $10 - $20 total (Fre"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/Kyoto_Travel_Guide_EN.md",
+          "document": "Kyoto_Travel_Guide_EN.md",
+          "score": 0.6819391846656799,
+          "snippet": "* **Accommodation:** $80 - $200 / night (Standard 3/4-star hotels, modern Machiya rentals, or entry-level Ryokans without meals). * **Food:** $50 - $100 / day (Casual Obanzai restaurants, nice cafes, and mid-range sushi or teppanyaki). * **Transport:** $10 - $15 / day (Subway + bus combination). * **Attractions:** $20 - $40 / day (Temple entrance fees, kimono rental for a few hours). ### ð??? Luxu"
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/Osaka_Travel_Guide_EN.md",
+          "document": "Osaka_Travel_Guide_EN.md",
+          "score": 0.5966073274612427,
+          "snippet": "--- ## ð??° 5. Cost Estimation: Budget to Luxury *Note: Prices are estimates per person and can vary based on season and exchange rates. (Prices estimated in USD).* ### ð??? Budget / Backpacker Style *Perfect for travelers looking to save money without missing out on the core experience.* * **Accommodation:** $20 - $40 / night (Hostels, Capsule Hotels, or Guesthouses). * **Food:** $15 - $30 / day "
+        },
+        {
+          "uri": "https://kelana-bucket-837933860729-ap-southeast-2-an.s3.ap-southeast-2.amazonaws.com/Kyoto_Travel_Guide_EN.md",
+          "document": "Kyoto_Travel_Guide_EN.md",
+          "score": 0.4173916280269623,
+          "snippet": "* **Trains (JR, Keihan, Hankyu, Randen):** Great for reaching specific areas. JR is best for Arashiyama and Fushimi Inari. Keihan is excellent for the Higashiyama/Gion area. * **Recommended Travel Passes:** * **Subway & Bus 1-Day Pass:** Highly recommended to save money and seamlessly switch between the subway (to avoid traffic) and buses. * **ICOCA / Suica Card:** The standard tap-and-go IC card "
+        }
+      ],
+      "base_answer": "Certainly! Here's a breakdown of an estimated daily budget for a backpacker in Kyoto, Japan, assuming a moderate level of comfort and experience:\n\n### 1. **Accommodation**\n- **Hostels/Budget Hotels:** ¥3,000 - ¥6,000 ($20 - $40)\n- **Capsule Hotels:** ¥2,500 - ¥4,000 ($17 - $27)\n\n### 2. **Food**\n- **Street Food/Convenience Store Meals:** ¥1,000 - ¥2,000 ($7 - $14) per meal\n  - A full meal at a local restaurant or izakaya can range from ¥1,000 - ¥3,000 ($7 - $20).\n- **Snacks/Drinks:** ¥500 - ¥1,000 ($3 - $7)\n\n**Total Daily Food Budget:** ¥3,500 - ¥6,000 ($24 - $40)\n\n### 3. **Transport**\n- **Public Transport (Buses, Subway):** ¥500 - ¥1,000 ($3 - $7) per day\n  - A one-day pass for the subway and buses can cost around ¥600 ($4).\n- **Taxis:** Not typically used for daily transport but useful for short distances.\n\n**Total Daily Transport Budget:** ¥500 - ¥1,000 ($3 - $7)\n\n### 4. **Attractions**\n- **Temples/Shrines:** Many temples and shrines have small entry fees, typically ¥300 - ¥600 ($2 - $4).\n- **Museums/Special Attractions:** ¥500 - ¥2,000 ($3 - $14) depending on the attraction.\n\n**Total Daily Attractions Budget:** ¥500 - ¥2,500 ($3 - $17)\n\n### **Summary of Daily Budget:**\n- **Accommodation:** ¥3,000 - ¥6,000 ($20 - $40)\n- **Food:** ¥3,500 - ¥6,000 ($24 - $40)\n- **Transport:** ¥500 - ¥1,000 ($3 - $7)\n- **Attractions:** ¥500 - ¥2,500 ($3 - $17)\n\n**Total Estimated Daily Budget:** ¥7,500 - ¥15,500 ($50 - $108)\n\nOf course, these are rough estimates, and your actual expenses may vary based on your preferences, travel style, and any special activities you might want to do. Enjoy your trip to Kyoto!"
+    }
+  ]
+}
