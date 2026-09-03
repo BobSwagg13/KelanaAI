@@ -19,3 +19,7 @@ class User(Base):
 
     # Deleting a user removes their trips; a trip cannot outlive its owner.
     trips = relationship("Trip", back_populates="user", cascade="all, delete-orphan")
+    # Same rule for chat history.
+    conversations = relationship(
+        "Conversation", back_populates="user", cascade="all, delete-orphan"
+    )

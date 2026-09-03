@@ -6,14 +6,17 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, EmailStr, Field
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from database import SessionLocal, init_db
 from models.trip import Trip
 from models.user import User
+from models.conversation import Conversation
+from models.message import Message
 from services.trip_service import calculate_daily_budget, get_trip_category
 from services.bedrock_service import generate_recommendation, RecommendationError
-from services.kb_service import ask_knowledge_base, KnowledgeBaseError
+from services.kb_service import generate_reply, generate_title, KnowledgeBaseError
 from services.auth_service import (
     AuthError,
     MIN_PASSWORD_LENGTH,
@@ -42,8 +45,12 @@ class LoginRequest(BaseModel):
     password: str
 
 
-class QuestionRequest(BaseModel):
-    question: str = Field(min_length=3, max_length=500)
+class CreateMessageRequest(BaseModel):
+    content: str = Field(min_length=1, max_length=4000)
+
+
+class RenameConversationRequest(BaseModel):
+    title: str = Field(min_length=1, max_length=256)
 
 
 class TripRequest(BaseModel):
@@ -156,6 +163,55 @@ def get_owned_trip(trip_id: int, user: User, db: Session) -> Trip:
             detail="You do not have access to this trip.",
         )
     return trip
+
+
+def get_owned_conversation(conversation_id: int, user: User, db: Session) -> Conversation:
+    """Fetch a conversation the caller owns, or raise. Same 404/403 contract as trips."""
+    conversation = (
+        db.query(Conversation).filter(Conversation.id == conversation_id).first()
+    )
+    if conversation is None:
+        raise HTTPException(
+            status_code=404, detail=f"Conversation with id {conversation_id} not found"
+        )
+    if conversation.user_id != user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have access to this conversation.",
+        )
+    return conversation
+
+
+def message_to_dict(message: Message) -> dict:
+    sources = None
+    if message.sources:
+        try:
+            sources = json.loads(message.sources)
+        except (json.JSONDecodeError, TypeError):
+            sources = None
+
+    return {
+        "id": message.id,
+        "conversation_id": message.conversation_id,
+        "role": message.role,
+        "content": message.content,
+        "sources": sources,
+        "created_at": message.created_at.isoformat() if message.created_at else None,
+    }
+
+
+def conversation_to_dict(conversation: Conversation, *, with_messages: bool = False) -> dict:
+    data = {
+        "id": conversation.id,
+        "user_id": conversation.user_id,
+        "title": conversation.title,
+        "created_at": conversation.created_at.isoformat() if conversation.created_at else None,
+        "updated_at": conversation.updated_at.isoformat() if conversation.updated_at else None,
+        "message_count": len(conversation.messages),
+    }
+    if with_messages:
+        data["messages"] = [message_to_dict(m) for m in conversation.messages]
+    return data
 
 
 def trip_to_dict(trip: Trip) -> dict:
@@ -399,25 +455,120 @@ def generate_trip_recommendation(
     return trip_to_dict(trip)
 
 
-@app.post("/api/v1/ask")
-def ask_assistant(
-    request: QuestionRequest,
+@app.get("/api/v1/conversations")
+def list_conversations(
     user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
-    """Answer a travel question grounded in the knowledge base.
+    """The caller's conversations, most recent activity first."""
+    conversations = (
+        db.query(Conversation)
+        .filter(Conversation.user_id == user.id)
+        .order_by(Conversation.updated_at.desc(), Conversation.id.desc())
+        .all()
+    )
+    return [conversation_to_dict(c) for c in conversations]
 
-    One-shot: no conversation state is kept between calls. Requires a session
-    like every other non-auth endpoint. The answer is not persisted; each call
-    re-retrieves and re-generates.
+
+@app.post("/api/v1/conversations", status_code=status.HTTP_201_CREATED)
+def create_conversation(
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Start an empty conversation. The title stays null until the first exchange."""
+    conversation = Conversation(user_id=user.id)
+    db.add(conversation)
+    db.commit()
+    db.refresh(conversation)
+    return conversation_to_dict(conversation, with_messages=True)
+
+
+@app.get("/api/v1/conversations/{conversation_id}")
+def get_conversation(
+    conversation_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    conversation = get_owned_conversation(conversation_id, user, db)
+    return conversation_to_dict(conversation, with_messages=True)
+
+
+@app.patch("/api/v1/conversations/{conversation_id}")
+def rename_conversation(
+    conversation_id: int,
+    request: RenameConversationRequest,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    conversation = get_owned_conversation(conversation_id, user, db)
+    conversation.title = request.title.strip()
+    db.commit()
+    db.refresh(conversation)
+    return conversation_to_dict(conversation)
+
+
+@app.delete("/api/v1/conversations/{conversation_id}")
+def delete_conversation(
+    conversation_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    conversation = get_owned_conversation(conversation_id, user, db)
+    db.delete(conversation)
+    db.commit()
+    return {"message": f"Conversation with id {conversation_id} deleted successfully"}
+
+
+@app.post("/api/v1/conversations/{conversation_id}/messages", status_code=status.HTTP_201_CREATED)
+def post_message(
+    conversation_id: int,
+    request: CreateMessageRequest,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Add the user's message, generate the grounded reply, persist both.
+
+    Returns the two new messages plus the conversation (its title may have just
+    been generated). A generation failure is a 502 and leaves nothing behind —
+    same rule as the itinerary path.
     """
+    conversation = get_owned_conversation(conversation_id, user, db)
+
+    history = [{"role": m.role, "content": m.content} for m in conversation.messages]
+    content = request.content.strip()
+
     try:
-        result = ask_knowledge_base(request.question)
+        result = generate_reply(history, content)
     except KnowledgeBaseError as e:
-        # Nothing usable came back from retrieval or generation. Surfaced as a
-        # bad-gateway rather than persisted, same rule as the itinerary path.
         raise HTTPException(status_code=502, detail=str(e)) from e
 
-    return {"question": request.question, **result}
+    user_message = Message(conversation_id=conversation.id, role="user", content=content)
+    assistant_message = Message(
+        conversation_id=conversation.id,
+        role="assistant",
+        content=result["answer"],
+        sources=json.dumps(result["sources"]) if result["sources"] else None,
+    )
+    db.add_all([user_message, assistant_message])
+
+    # First exchange: name the conversation from it. A title failure falls back
+    # inside generate_title, so this never blocks the reply.
+    if conversation.title is None and not history:
+        conversation.title = generate_title(content, result["answer"])
+
+    # Touch updated_at so the history list resurfaces this thread.
+    conversation.updated_at = func.now()
+
+    db.commit()
+    db.refresh(conversation)
+    db.refresh(user_message)
+    db.refresh(assistant_message)
+
+    return {
+        "conversation": conversation_to_dict(conversation),
+        "user_message": message_to_dict(user_message),
+        "assistant_message": message_to_dict(assistant_message),
+    }
 
 
 @app.get("/api/v1/recommendations")
