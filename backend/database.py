@@ -8,8 +8,13 @@ load_dotenv()
 # connection string from .env — never hardcode secrets
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# engine = the connection pool
-engine = create_engine(DATABASE_URL)
+# engine = the connection pool.
+# pool_pre_ping / pool_recycle: managed Postgres (Neon, RDS, ...) drops idle
+# connections — Neon's free tier also auto-suspends after ~5 min. Without these
+# the pool hands out a dead socket and the next query fails with
+# "server closed the connection unexpectedly". pre_ping checks liveness before
+# handing a connection out; recycle discards any held longer than 5 minutes.
+engine = create_engine(DATABASE_URL, pool_pre_ping=True, pool_recycle=300)
 # SessionLocal = a factory for DB sessions
 SessionLocal = sessionmaker(bind=engine, autoflush=False)
 

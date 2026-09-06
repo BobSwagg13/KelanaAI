@@ -1,4 +1,4 @@
-fastapi 
+fastapi[standard] # [standard] pulls in fastapi-cli, needed by `fastapi run` on FastAPI Cloud
 uvicorn[standard]
 sqlalchemy # the ORM
 psycopg2-binary # the Postgres driver
