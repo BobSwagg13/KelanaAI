@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from typing import Iterator, Optional
 
 from fastapi import Depends, FastAPI, HTTPException, status
@@ -73,12 +74,22 @@ class TripRequest(BaseModel):
 
 app = FastAPI()
 
+# Browser origins allowed to call the API. localhost is for local dev; extra
+# production origins come from FRONTEND_URL (comma-separated for more than one)
+# so they can be set per environment without a code change. Vercel gives each
+# deployment its own hostname, so preview/branch URLs are matched by regex
+# rather than enumerated.
+_frontend_url = os.getenv("FRONTEND_URL", "")
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://kelanaai.com",
+    *(o.strip() for o in _frontend_url.split(",") if o.strip()),
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://kelanaai.com",
-    ],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=r"https://kelana[a-z0-9-]*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
