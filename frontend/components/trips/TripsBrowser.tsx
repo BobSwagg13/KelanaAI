@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
 import { Search, SearchX, MapPinned, ChevronLeft, ChevronRight } from 'lucide-react';
 import { tripsApi } from '@/lib/api/trips';
-import { createAppError, type AppError } from '@/lib/types/errors';
+import { tripKeys } from '@/lib/queries/keys';
+import { createAppError } from '@/lib/types/errors';
 import { tripCreatedAtMs, tripSearchText, type Trip } from '@/lib/types/trip';
 import { LoadingState } from '@/components/shared/LoadingState';
 import { ErrorDisplay } from '@/components/shared/ErrorDisplay';
@@ -38,40 +40,28 @@ function compareRecency(a: Trip, b: Trip): number {
 }
 
 export function TripsBrowser() {
-  const [trips, setTrips] = useState<Trip[] | null>(null);
-  const [error, setError] = useState<AppError | null>(null);
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<SortOrder>('latest');
   const [page, setPage] = useState(1);
-  const [reloadKey, setReloadKey] = useState(0);
 
-  useEffect(() => {
-    // A plain flag, not AbortController: aborting makes axios reject with
-    // CanceledError, which createAppError would surface as a bogus "Unable to
-    // connect" banner on every StrictMode double-mount in dev.
-    //
-    // Nothing is set synchronously here — clearing state for a reload happens in
-    // the retry handler, so this effect only writes from async continuations.
-    let cancelled = false;
+  // Cached across navigations, so trips -> detail -> back paints instantly and
+  // revalidates in the background instead of showing a spinner every time.
+  const {
+    data: trips,
+    error: queryError,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: tripKeys.list(),
+    queryFn: tripsApi.listTrips,
+  });
 
-    tripsApi
-      .listTrips()
-      .then((data) => {
-        if (!cancelled) setTrips(data);
-      })
-      .catch((err) => {
-        if (!cancelled) setError(createAppError(err));
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [reloadKey]);
+  // The axios interceptor already rejects with an AppError; createAppError
+  // short-circuits on one, so this just narrows the type.
+  const error = queryError ? createAppError(queryError) : null;
 
   const handleRetry = () => {
-    setTrips(null);
-    setError(null);
-    setReloadKey((k) => k + 1);
+    void refetch();
   };
 
   // Page resets live with the interactions that cause them rather than in an
@@ -106,10 +96,10 @@ export function TripsBrowser() {
   const pageItems = visible.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   if (error) {
-    return <ErrorDisplay error={error} onRetry={handleRetry} onDismiss={() => setError(null)} />;
+    return <ErrorDisplay error={error} onRetry={handleRetry} />;
   }
 
-  if (trips === null) {
+  if (isLoading || !trips) {
     return <LoadingState stage="loading" message="Loading your trips..." />;
   }
 
