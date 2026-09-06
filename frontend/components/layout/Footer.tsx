@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { SquareCode, Heart } from 'lucide-react';
 
 interface FooterProps {
@@ -38,6 +39,20 @@ export function Footer({ className = '' }: FooterProps) {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-gray-900">Resources</h4>
             <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center text-sm text-gray-600 transition-colors hover:text-gray-900"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--brand-primary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = '';
+                  }}
+                >
+                  About
+                </Link>
+              </li>
               <li>
                 <a
                   href="https://github.com/BobSwagg13/KelanaAI"
