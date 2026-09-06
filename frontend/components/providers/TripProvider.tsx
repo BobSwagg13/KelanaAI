@@ -1,7 +1,9 @@
 'use client';
 
 import React, { createContext, useCallback, useContext, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { tripsApi } from '@/lib/api/trips';
+import { tripKeys } from '@/lib/queries/keys';
 import { createAppError, type AppError } from '@/lib/types/errors';
 import type { CreateTripRequest, Trip } from '@/lib/types/trip';
 import type { StructuredRecommendation } from '@/lib/types/recommendation';
@@ -54,6 +56,7 @@ export function TripProvider({
   const [loadingStage, setLoadingStage] = useState<LoadingStage | null>(null);
   const [error, setError] = useState<AppError | null>(null);
   const [lastRequest, setLastRequest] = useState<CreateTripRequest | null>(null);
+  const queryClient = useQueryClient();
 
   /**
    * Runs an async flow with shared loading/error handling so each action below
@@ -77,6 +80,36 @@ export function TripProvider({
     setRecommendation(trip.ai_recommendation);
   }, []);
 
+  /**
+   * Apply a trip AND tell the query cache about it.
+   *
+   * TripsBrowser reads the trips list through React Query with a 60s
+   * staleTime, so a trip created here would otherwise not appear under History
+   * until that window expired. Seeding the detail entry as well makes opening
+   * the trip from the list instant.
+   *
+   * Only the mutating flows use this — `loadTrip` is a read and has nothing to
+   * publish.
+   */
+  const publishTrip = useCallback(
+    (trip: Trip) => {
+      applyTrip(trip);
+      queryClient.setQueryData(tripKeys.detail(trip.id), trip);
+
+      // Upsert into the cached list so History renders the trip the moment you
+      // navigate there. Invalidating alone would still cost a round trip on
+      // arrival, which is the delay this fixes. Left untouched when the list
+      // has never been fetched, so the first visit does a normal load.
+      queryClient.setQueryData<Trip[]>(tripKeys.list(), (prev) =>
+        prev ? [trip, ...prev.filter((t) => t.id !== trip.id)] : prev
+      );
+
+      // Then revalidate, so the server's ordering is what ultimately wins.
+      void queryClient.invalidateQueries({ queryKey: tripKeys.list() });
+    },
+    [applyTrip, queryClient]
+  );
+
   const createTrip = useCallback(
     async (data: CreateTripRequest): Promise<Trip | null> => {
       setLastRequest(data);
@@ -88,15 +121,15 @@ export function TripProvider({
       await run(async () => {
         setLoadingStage('creating');
         created = await tripsApi.createTrip(data);
-        setCurrentTrip(created);
+        publishTrip(created);
 
         setLoadingStage('generating');
-        applyTrip(await tripsApi.generateRecommendation(created.id));
+        publishTrip(await tripsApi.generateRecommendation(created.id));
       });
 
       return created;
     },
-    [run, applyTrip]
+    [run, publishTrip]
   );
 
   const loadTrip = useCallback(
@@ -116,22 +149,22 @@ export function TripProvider({
       await run(async () => {
         setLoadingStage('updating');
         const updated = await tripsApi.updateTrip(currentTrip.id, data);
-        setCurrentTrip(updated);
+        publishTrip(updated);
 
         setLoadingStage('generating');
-        applyTrip(await tripsApi.generateRecommendation(updated.id));
+        publishTrip(await tripsApi.generateRecommendation(updated.id));
       });
     },
-    [currentTrip, run, applyTrip]
+    [currentTrip, run, publishTrip]
   );
 
   const regenerate = useCallback(async () => {
     if (!currentTrip) return;
     await run(async () => {
       setLoadingStage('generating');
-      applyTrip(await tripsApi.generateRecommendation(currentTrip.id));
+      publishTrip(await tripsApi.generateRecommendation(currentTrip.id));
     });
-  }, [currentTrip, run, applyTrip]);
+  }, [currentTrip, run, publishTrip]);
 
   /**
    * A failure can happen before or after the trip row exists. Once it does,

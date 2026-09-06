@@ -68,35 +68,24 @@ export function RecommendationDisplay({
         animate="visible"
         variants={fadeIn}
         transition={{ duration: 0.5 }}
-        className={`relative overflow-hidden rounded-2xl text-white shadow-lg ${
-          trip.image_url ? 'sm:min-h-56' : ''
-        }`}
-        style={trip.image_url ? undefined : { background: 'var(--brand-gradient)' }}
+        className="overflow-hidden rounded-2xl text-white shadow-lg"
       >
+        {/* Its own band above the panel rather than a backdrop behind it: as an
+            overlay the gradient had to be near-opaque to keep the white type
+            readable, which left the photo barely visible. */}
         {trip.image_url && (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element --
-                served by our own API, whose host is runtime config
-                (NEXT_PUBLIC_API_URL) and so cannot be declared in
-                next.config's build-time remotePatterns. */}
-            <img
-              src={resolveApiUrl(trip.image_url)}
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            {/* The brand gradient becomes an overlay so the white type stays
-                legible over an arbitrary photo. */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(135deg, rgba(37,99,235,0.86) 0%, rgba(30,58,138,0.86) 100%)',
-              }}
-            />
-          </>
+          /* Served by our own API, whose host is runtime config
+             (NEXT_PUBLIC_API_URL), so it cannot be declared in next.config's
+             build-time remotePatterns. */
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={resolveApiUrl(trip.image_url)}
+            alt={`${trip_overview.destination}, ${trip_overview.country}`}
+            className="h-48 w-full object-cover sm:h-64"
+          />
         )}
 
-        <div className="relative p-6 sm:p-8">
+        <div className="p-6 sm:p-8" style={{ background: 'var(--brand-gradient)' }}>
           <p className="text-sm font-semibold uppercase tracking-widest opacity-80">
             {trip_overview.travel_month} · {trip_overview.category}
           </p>
