@@ -98,6 +98,8 @@ Open http://localhost:3000.
 | `AWS_ACCESS_KEY_ID` | for the assistant | SigV4 credentials. The bearer token above **cannot** call the Knowledge Base APIs. |
 | `AWS_SECRET_ACCESS_KEY` | for the assistant | Pairs with the above. |
 | `KNOWLEDGE_BASE_ID` | for the assistant | The managed Bedrock Knowledge Base to query. |
+| `PIXABAY_API_KEY` | for trip photos | [Pixabay](https://pixabay.com/api/docs/) key. Unset means trips are created without a photo. |
+| `TRIP_IMAGE_BUCKET` | for trip photos | Public-read S3 bucket the downloaded photos are copied into. |
 | `FRONTEND_URL` | for deploys | Extra CORS origins, comma-separated. Vercel's own `*.vercel.app` hostnames are matched by a regex in `main.py` and don't need listing. |
 
 ### `frontend/.env.local`
@@ -168,6 +170,37 @@ Any other host works the same way, as long as it binds `0.0.0.0:$PORT`.
 2. Add `NEXT_PUBLIC_API_URL` (your backend URL, no trailing slash) and
    `NEXT_PUBLIC_MAP_TILE_URL`.
 3. Deploy — and redeploy after any change to those variables.
+
+### Trip photos (optional)
+
+Each trip gets a hero photo of its destination, searched on Pixabay as
+`"{destination} landscape"` when the trip is created. Pixabay forbids permanent
+hotlinking and its `webformatURL` expires after 24 hours, so the image is
+downloaded and re-hosted in your own bucket, and the contributor credit is
+stored alongside it and shown wherever the photo appears — that attribution is
+a condition of using their API.
+
+To enable it:
+
+1. Create an S3 bucket (e.g. `kelanaai-trip-images`) in your `AWS_REGION`.
+2. Turn off **Block all public access** on it and attach a read policy:
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [{
+       "Effect": "Allow",
+       "Principal": "*",
+       "Action": "s3:GetObject",
+       "Resource": "arn:aws:s3:::kelanaai-trip-images/*"
+     }]
+   }
+   ```
+3. Grant the backend's IAM user `s3:PutObject` on `arn:aws:s3:::kelanaai-trip-images/*`.
+4. Set `PIXABAY_API_KEY` and `TRIP_IMAGE_BUCKET`.
+
+Leave either variable unset and the lookup is skipped — trips are created
+normally, just without a photo. The lookup runs after the trip is committed and
+swallows every error, so it can never cost you a trip.
 
 ### CORS
 

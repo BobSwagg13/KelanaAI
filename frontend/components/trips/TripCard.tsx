@@ -93,7 +93,21 @@ export function TripCard({ trip }: TripCardProps) {
       data-testid={`trip-card-${trip.id}`}
       className="rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
     >
-      <Card hoverable className="h-full flex flex-col gap-3">
+      <Card hoverable className="h-full flex flex-col gap-3 overflow-hidden">
+        {trip.image_url && (
+          <div className="-mx-4 -mt-4 sm:-mx-6 sm:-mt-6 mb-1 overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element --
+                the S3 host is runtime config (TRIP_IMAGE_BUCKET), so it cannot
+                be declared in next.config's build-time remotePatterns. */}
+            <img
+              src={trip.image_url}
+              alt=""
+              loading="lazy"
+              className="h-32 w-full object-cover"
+            />
+          </div>
+        )}
+
         <div className="flex items-start gap-3">
           <span className="text-3xl leading-none" aria-hidden={flag ? undefined : true}>
             {flag ?? <Globe size={28} className="text-brand-muted" aria-hidden="true" />}

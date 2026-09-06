@@ -45,6 +45,17 @@ class Trip(Base):
 
     ai_recommendation = Column(Text, nullable=True)
 
+    # Hero photo of the destination, fetched from Pixabay on create and copied
+    # to our own S3 bucket. Nullable throughout: the lookup is decorative and
+    # must never block a trip from being created, and rows predating the
+    # feature have none. Pixabay forbids permanent hotlinking and its
+    # webformatURL expires after 24h, which is why we store our own copy.
+    # Their terms also require crediting the contributor wherever the image is
+    # shown, so the credit travels with the URL.
+    image_url          = Column(String, nullable=True)
+    image_credit_name  = Column(String, nullable=True)
+    image_credit_url   = Column(String, nullable=True)
+
     # Nullable with no backfill: rows that predate this column genuinely have no
     # known creation time, and stamping them with the migration timestamp would
     # render a month-old trip as "created just now". New rows get it from the DB.

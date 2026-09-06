@@ -18,6 +18,7 @@ from models.message import Message
 from services.trip_service import calculate_daily_budget, get_trip_category
 from services.bedrock_service import generate_recommendation, RecommendationError
 from services.kb_service import generate_reply, generate_title, KnowledgeBaseError
+from services.image_service import fetch_trip_image
 from services.auth_service import (
     AuthError,
     MIN_PASSWORD_LENGTH,
@@ -256,6 +257,9 @@ def trip_to_dict(trip: Trip) -> dict:
         "transport_cost": trip.transport_cost,
         "miscellaneous_cost": trip.miscellaneous_cost,
         "ai_recommendation": ai_recommendation,
+        "image_url": trip.image_url,
+        "image_credit_name": trip.image_credit_name,
+        "image_credit_url": trip.image_credit_url,
     }
 
 
@@ -355,6 +359,18 @@ def create_trip(
     db.add(trip)
     db.commit()
     db.refresh(trip)
+
+    # Decorative, and deliberately after the commit: the trip is already saved,
+    # so a slow or failing Pixabay lookup costs a photo, never the trip. Needs
+    # the id, which only exists once the row is written.
+    image = fetch_trip_image(trip.destination, trip.id)
+    if image:
+        trip.image_url = image["url"]
+        trip.image_credit_name = image["credit_name"]
+        trip.image_credit_url = image["credit_url"]
+        db.commit()
+        db.refresh(trip)
+
     return trip_to_dict(trip)
 
 

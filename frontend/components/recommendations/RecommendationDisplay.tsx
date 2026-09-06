@@ -67,19 +67,70 @@ export function RecommendationDisplay({
         animate="visible"
         variants={fadeIn}
         transition={{ duration: 0.5 }}
-        className="rounded-2xl p-6 sm:p-8 text-white shadow-lg"
-        style={{ background: 'var(--brand-gradient)' }}
+        className={`relative overflow-hidden rounded-2xl text-white shadow-lg ${
+          trip.image_url ? 'sm:min-h-56' : ''
+        }`}
+        style={trip.image_url ? undefined : { background: 'var(--brand-gradient)' }}
       >
-        <p className="text-sm font-semibold uppercase tracking-widest opacity-80">
-          {trip_overview.travel_month} · {trip_overview.category}
-        </p>
-        <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight mt-2">
-          {trip_overview.destination}, {trip_overview.country}
-        </h2>
-        <div className="mt-5 flex flex-wrap gap-6 text-sm font-medium">
-          <span>{trip_overview.duration} days</span>
-          <span>{formatCurrency(trip_overview.daily_budget, trip.currency)} / day</span>
-          <span>{formatCurrency(trip.budget, trip.currency)} total</span>
+        {trip.image_url && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element --
+                the S3 host is runtime config (TRIP_IMAGE_BUCKET), so it cannot
+                be declared in next.config's build-time remotePatterns. */}
+            <img
+              src={trip.image_url}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* The brand gradient becomes an overlay so the white type stays
+                legible over an arbitrary photo. */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(135deg, rgba(37,99,235,0.86) 0%, rgba(30,58,138,0.86) 100%)',
+              }}
+            />
+          </>
+        )}
+
+        <div className="relative p-6 sm:p-8">
+          <p className="text-sm font-semibold uppercase tracking-widest opacity-80">
+            {trip_overview.travel_month} · {trip_overview.category}
+          </p>
+          <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight mt-2">
+            {trip_overview.destination}, {trip_overview.country}
+          </h2>
+          <div className="mt-5 flex flex-wrap gap-6 text-sm font-medium">
+            <span>{trip_overview.duration} days</span>
+            <span>{formatCurrency(trip_overview.daily_budget, trip.currency)} / day</span>
+            <span>{formatCurrency(trip.budget, trip.currency)} total</span>
+          </div>
+
+          {/* Pixabay's terms require crediting the contributor wherever the
+              image is shown. */}
+          {trip.image_url && trip.image_credit_name && (
+            <p className="mt-6 text-xs opacity-75">
+              Photo by{' '}
+              <a
+                href={trip.image_credit_url ?? 'https://pixabay.com'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                {trip.image_credit_name}
+              </a>{' '}
+              on{' '}
+              <a
+                href="https://pixabay.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                Pixabay
+              </a>
+            </p>
+          )}
         </div>
       </motion.div>
 
