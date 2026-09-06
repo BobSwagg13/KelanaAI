@@ -30,8 +30,9 @@ from services.auth_service import (
 
 logging.basicConfig(level=logging.INFO)
 
-# Kept in step with the frontend Zod schema. The upper bound keeps the
-# generated itinerary comfortably inside the model's output token budget.
+# Kept in step with the frontend Zod schema. Generation splits the itinerary
+# across concurrent batched calls, so this is a product decision about how long
+# a trip we plan for — not a model output-token limit as it once was.
 MAX_TRIP_DAYS = 30
 
 

@@ -43,9 +43,10 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  // AI generation measures 14-18s for a typical trip; the edit flow issues an
-  // update and a generate back to back.
-  timeout: 120000,
+  // Generation is now an outline call plus concurrent day-batches, which for a
+  // month-long trip measures around a minute; the edit flow issues an update
+  // and a generate back to back.
+  timeout: 180000,
 });
 
 apiClient.interceptors.request.use(
