@@ -158,10 +158,10 @@ export function Navbar({ className }: NavbarProps) {
               <Image
                 src="/KelanaLogo.png"
                 alt=""
-                width={26}
-                height={26}
+                width={34}
+                height={34}
                 priority
-                className="h-6 w-6 object-contain"
+                className="h-16 w-16 object-contain"
                 style={{ filter: 'brightness(0) invert(1)' }}
               />
             </div>
