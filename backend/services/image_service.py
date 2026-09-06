@@ -1,22 +1,24 @@
-"""Fetch a destination photo from Pixabay and store our own copy in S3.
+"""Fetch a destination photo from Pixabay.
 
-Called when a trip is created. Pixabay's terms shape the whole design:
+Called when a trip is created. Pixabay's terms shape the design:
 
   - Permanent hotlinking is not allowed, and `webformatURL` is documented as
     valid for 24 hours, so linking their URL would both breach the terms and
     break by the next day. We download the bytes and serve our own copy.
   - Attribution is required wherever the image is shown, so the contributor's
-    name and their Pixabay page travel with the URL.
+    name and their Pixabay page travel with the image.
   - Responses must be cached for 24 hours. Storing one image per trip and never
     re-querying satisfies that comfortably.
+
+The bytes are stored in Postgres rather than object storage: a 1280px Pixabay
+JPEG is around 60-70 KB, so a thousand trips is well under a hundred megabytes,
+and it keeps the feature free of any bucket, IAM policy or extra credentials.
 
 Nothing here raises. A trip without a photo is a trip that looks plainer; a trip
 that failed to save because a stock-photo API was down is a bug.
 """
 
 from dotenv import load_dotenv
-from botocore.exceptions import BotoCoreError, ClientError
-import boto3
 import json
 import logging
 import os
@@ -30,26 +32,20 @@ logger = logging.getLogger(__name__)
 
 PIXABAY_URL = "https://pixabay.com/api/"
 
-# Kept tight on purpose: this runs inline with trip creation, so the whole
-# lookup has to stay well under a second of perceived cost in the common case
-# and bail out fast when Pixabay is slow.
+# Kept tight on purpose: this runs inline with trip creation, so it has to bail
+# out fast when Pixabay is slow rather than hold up the response.
 SEARCH_TIMEOUT = 5
 DOWNLOAD_TIMEOUT = 10
 
-# Pixabay caps downloads we'd want at 1280px (largeImageURL); anything bigger
-# than this is a sign we grabbed something unexpected.
-MAX_IMAGE_BYTES = 8 * 1024 * 1024
-
-
-def _bucket() -> str | None:
-    return os.getenv("TRIP_IMAGE_BUCKET")
+# largeImageURL tops out at 1280px and measures ~70 KB; anything past this is a
+# sign we fetched something unexpected and should be dropped rather than stored.
+MAX_IMAGE_BYTES = 2 * 1024 * 1024
 
 
 def _search(destination: str, api_key: str) -> dict | None:
     """Top Pixabay hit for this destination, or None."""
     query = urllib.parse.urlencode({
         "key": api_key,
-        # The caller asked for landscape shots of the city specifically.
         "q": f"{destination} landscape",
         "image_type": "photo",
         "orientation": "horizontal",
@@ -68,6 +64,7 @@ def _search(destination: str, api_key: str) -> dict | None:
 
 
 def _download(url: str) -> bytes | None:
+    # Pixabay's CDN rejects requests without a User-Agent.
     req = urllib.request.Request(url, headers={"User-Agent": "KelanaAI/1.0"})
     with urllib.request.urlopen(req, timeout=DOWNLOAD_TIMEOUT) as response:
         data = response.read(MAX_IMAGE_BYTES + 1)
@@ -78,32 +75,16 @@ def _download(url: str) -> bytes | None:
     return data
 
 
-def _upload(data: bytes, bucket: str, key: str) -> str:
-    """Put the image in S3 and return the URL the browser will load."""
-    region = os.getenv("AWS_REGION")
-    s3 = boto3.client("s3", region_name=region)
-    s3.put_object(
-        Bucket=bucket,
-        Key=key,
-        Body=data,
-        ContentType="image/jpeg",
-        # Stock photos never change once written, so let browsers keep them.
-        CacheControl="public, max-age=31536000, immutable",
-    )
-    return f"https://{bucket}.s3.{region}.amazonaws.com/{key}"
-
-
 def fetch_trip_image(destination: str, trip_id: int) -> dict | None:
-    """Return ``{"url", "credit_name", "credit_url"}`` for `destination`.
+    """Return ``{"data", "credit_name", "credit_url"}`` for `destination`.
 
     Returns None — never raises — when the feature is unconfigured, Pixabay has
     no match, or anything along the way fails. The caller simply leaves the
     trip's image columns empty.
     """
     api_key = os.getenv("PIXABAY_API_KEY")
-    bucket = _bucket()
-    if not api_key or not bucket:
-        logger.info("Trip images not configured; skipping lookup for trip %s", trip_id)
+    if not api_key:
+        logger.info("PIXABAY_API_KEY unset; skipping photo for trip %s", trip_id)
         return None
 
     try:
@@ -129,14 +110,8 @@ def fetch_trip_image(destination: str, trip_id: int) -> dict | None:
     if not data:
         return None
 
-    try:
-        url = _upload(data, bucket, f"trips/{trip_id}.jpg")
-    except (BotoCoreError, ClientError) as e:
-        logger.warning("Could not store trip image for trip %s: %s", trip_id, e)
-        return None
-
     return {
-        "url": url,
+        "data": data,
         "credit_name": hit.get("user") or "Pixabay",
         "credit_url": hit.get("pageURL") or "https://pixabay.com",
     }

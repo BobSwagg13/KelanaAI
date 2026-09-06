@@ -22,6 +22,7 @@ import { getTravelGroup } from '@/lib/constants/travelGroups';
 import { formatBudget } from '@/lib/utils/budget';
 import { countryCodeToFlag } from '@/lib/utils/country';
 import { capitalize } from '@/lib/utils/text';
+import { resolveApiUrl } from '@/lib/api/client';
 import type { Trip } from '@/lib/types/trip';
 import { cn } from '@/lib/utils/cn';
 
@@ -97,10 +98,11 @@ export function TripCard({ trip }: TripCardProps) {
         {trip.image_url && (
           <div className="-mx-4 -mt-4 sm:-mx-6 sm:-mt-6 mb-1 overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element --
-                the S3 host is runtime config (TRIP_IMAGE_BUCKET), so it cannot
-                be declared in next.config's build-time remotePatterns. */}
+                served by our own API, whose host is runtime config
+                (NEXT_PUBLIC_API_URL) and so cannot be declared in
+                next.config's build-time remotePatterns. */}
             <img
-              src={trip.image_url}
+              src={resolveApiUrl(trip.image_url)}
               alt=""
               loading="lazy"
               className="h-32 w-full object-cover"

@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, Text, DateTime, ForeignKey, func
+from sqlalchemy import (
+    Column, Integer, String, Float, Text, LargeBinary, DateTime, ForeignKey, func
+)
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -45,14 +47,19 @@ class Trip(Base):
 
     ai_recommendation = Column(Text, nullable=True)
 
-    # Hero photo of the destination, fetched from Pixabay on create and copied
-    # to our own S3 bucket. Nullable throughout: the lookup is decorative and
-    # must never block a trip from being created, and rows predating the
-    # feature have none. Pixabay forbids permanent hotlinking and its
-    # webformatURL expires after 24h, which is why we store our own copy.
-    # Their terms also require crediting the contributor wherever the image is
-    # shown, so the credit travels with the URL.
-    image_url          = Column(String, nullable=True)
+    # Hero photo of the destination, fetched from Pixabay when the trip is
+    # created. Nullable throughout: the lookup is decorative and must never
+    # block a trip from being created, and rows predating the feature have none.
+    #
+    # The JPEG itself is stored here rather than hotlinked — Pixabay forbids
+    # permanent hotlinking and its webformatURL expires after 24h. At ~70 KB a
+    # photo this is far cheaper than standing up object storage. It is served by
+    # GET /api/v1/trips/{id}/image and deliberately never included in
+    # trip_to_dict, which would put it in every list response.
+    #
+    # Pixabay also requires crediting the contributor wherever the image is
+    # shown, so the credit is stored with it.
+    image_data         = Column(LargeBinary, nullable=True)
     image_credit_name  = Column(String, nullable=True)
     image_credit_url   = Column(String, nullable=True)
 

@@ -3,7 +3,7 @@ import logging
 import os
 from typing import Iterator, Optional
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, EmailStr, Field
@@ -257,7 +257,9 @@ def trip_to_dict(trip: Trip) -> dict:
         "transport_cost": trip.transport_cost,
         "miscellaneous_cost": trip.miscellaneous_cost,
         "ai_recommendation": ai_recommendation,
-        "image_url": trip.image_url,
+        # A path, not the bytes: image_data would be megabytes of base64 across
+        # a list response. The client resolves this against its API base URL.
+        "image_url": f"/api/v1/trips/{trip.id}/image" if trip.image_data else None,
         "image_credit_name": trip.image_credit_name,
         "image_credit_url": trip.image_credit_url,
     }
@@ -365,13 +367,34 @@ def create_trip(
     # the id, which only exists once the row is written.
     image = fetch_trip_image(trip.destination, trip.id)
     if image:
-        trip.image_url = image["url"]
+        trip.image_data = image["data"]
         trip.image_credit_name = image["credit_name"]
         trip.image_credit_url = image["credit_url"]
         db.commit()
         db.refresh(trip)
 
     return trip_to_dict(trip)
+
+
+@app.get("/api/v1/trips/{trip_id}/image")
+def get_trip_image(trip_id: int, db: Session = Depends(get_db)):
+    """Serve a trip's destination photo.
+
+    Deliberately unauthenticated: a browser cannot attach the Bearer token to an
+    <img src>, and the payload is a royalty-free stock photo of a city that
+    reveals nothing about the traveller or their plans. The response is
+    immutable — a trip's photo is chosen once at creation — so it is cached hard
+    and this endpoint is hit at most once per browser.
+    """
+    trip = db.query(Trip).filter(Trip.id == trip_id).first()
+    if trip is None or not trip.image_data:
+        raise HTTPException(status_code=404, detail="No image for this trip.")
+
+    return Response(
+        content=trip.image_data,
+        media_type="image/jpeg",
+        headers={"Cache-Control": "public, max-age=31536000, immutable"},
+    )
 
 
 @app.get("/api/v1/trips")

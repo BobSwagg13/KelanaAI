@@ -100,11 +100,14 @@ export interface Trip {
   miscellaneous_cost: number | null;
   ai_recommendation: StructuredRecommendation | null;
   /**
-   * Destination photo, sourced from Pixabay on create and re-hosted in our own
-   * S3 bucket. Null when the lookup found nothing or the feature is
-   * unconfigured, so every consumer must handle its absence. Pixabay requires
-   * the contributor credit to be shown wherever the image is — render
-   * `image_credit_name` linking to `image_credit_url` alongside it.
+   * Destination photo, sourced from Pixabay when the trip was created.
+   *
+   * A backend-relative path (`/api/v1/trips/{id}/image`), not an absolute URL —
+   * pass it through `resolveApiUrl` before putting it in an `<img src>`. Null
+   * when the lookup found nothing or the feature is unconfigured, so every
+   * consumer must handle its absence. Pixabay requires the contributor credit
+   * to be shown wherever the image is: render `image_credit_name` linking to
+   * `image_credit_url` alongside it.
    */
   image_url: string | null;
   image_credit_name: string | null;

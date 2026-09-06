@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Utensils, Plane, Car, RotateCcw, Plus } from 'lucide-react';
 import type { StructuredRecommendation } from '@/lib/types/recommendation';
+import { resolveApiUrl } from '@/lib/api/client';
 import type { Trip } from '@/lib/types/trip';
 import { formatCurrency } from '@/lib/utils/budget';
 import { DailyItinerary } from './DailyItinerary';
@@ -75,10 +76,11 @@ export function RecommendationDisplay({
         {trip.image_url && (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element --
-                the S3 host is runtime config (TRIP_IMAGE_BUCKET), so it cannot
-                be declared in next.config's build-time remotePatterns. */}
+                served by our own API, whose host is runtime config
+                (NEXT_PUBLIC_API_URL) and so cannot be declared in
+                next.config's build-time remotePatterns. */}
             <img
-              src={trip.image_url}
+              src={resolveApiUrl(trip.image_url)}
               alt=""
               className="absolute inset-0 h-full w-full object-cover"
             />

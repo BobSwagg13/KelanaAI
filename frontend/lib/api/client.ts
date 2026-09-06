@@ -6,6 +6,16 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 const TOKEN_KEY = 'kelanaai_token';
 
 /**
+ * Turn a backend-relative path into an absolute URL.
+ *
+ * Needed for anything the browser fetches on its own rather than through axios:
+ * an `<img src>` has no `baseURL` to inherit.
+ */
+export function resolveApiUrl(path: string): string {
+  return `${API_BASE_URL}${path}`;
+}
+
+/**
  * The JWT lives in localStorage, so it survives a reload but is readable by any
  * script on the page — route protection is therefore client-side (see
  * RequireAuth). Every accessor tolerates storage being unavailable (private
