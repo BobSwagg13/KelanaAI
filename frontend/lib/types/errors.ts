@@ -55,6 +55,47 @@ function extractDetailMessage(detail: unknown): string | null {
   return null;
 }
 
+/**
+ * A `detail` that reads like a raw exception rather than advice for the user.
+ *
+ * The backend's deliberate messages (RecommendationError, KnowledgeBaseError,
+ * auth failures) are written as sentences and should be shown verbatim. An
+ * unhandled 500 gives us FastAPI's bare "Internal Server Error" or a Python
+ * repr, which is noise — fall back to the canned copy for those.
+ */
+function looksLikeException(text: string): boolean {
+  return (
+    text === 'Internal Server Error' ||
+    text.includes('Traceback') ||
+    text.includes(' object at 0x') ||
+    /^[A-Za-z_]*Error\b/.test(text)
+  );
+}
+
+/**
+ * The diagnostic line behind "Show details".
+ *
+ * Never the raw response body: `JSON.stringify(data)` put `{"detail":"..."}`
+ * on screen braces-and-all, which just repeated the headline in a worse format.
+ * In development the whole body is genuinely useful, so it is pretty-printed
+ * there; in production we only add a status line when there was no usable
+ * `detail`, and otherwise omit details entirely so the toggle doesn't render.
+ */
+function buildDetails(
+  status: number,
+  data: unknown,
+  detail: string | null
+): string | undefined {
+  if (process.env.NODE_ENV !== 'production') {
+    try {
+      return `HTTP ${status}\n${JSON.stringify(data, null, 2)}`;
+    } catch {
+      return `HTTP ${status}`;
+    }
+  }
+  return detail ? undefined : `HTTP ${status}`;
+}
+
 export function isAppError(error: unknown): error is AppError {
   return (
     typeof error === 'object' &&
@@ -73,8 +114,9 @@ export function createAppError(error: unknown): AppError {
   if (axios.isAxiosError(error)) {
     if (error.response) {
       const status = error.response.status;
-      const detail = extractDetailMessage(error.response.data?.detail);
-      const details = JSON.stringify(error.response.data);
+      const raw = extractDetailMessage(error.response.data?.detail);
+      const detail = raw && !looksLikeException(raw) ? raw : null;
+      const details = buildDetails(status, error.response.data, detail);
 
       // A missing row will never appear on retry, so offering one is a trap.
       if (status === 404) {

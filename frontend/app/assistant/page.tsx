@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RequireAuth } from '@/components/auth/RequireAuth';
 import { ConversationSidebar } from '@/components/assistant/ConversationSidebar';
 import { ChatPanel } from '@/components/assistant/ChatPanel';
@@ -28,8 +28,22 @@ function AssistantContent() {
   const [loadingList, setLoadingList] = useState(true);
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [sending, setSending] = useState(false);
+  // Every mutation guards on one of these. Without them, spam-clicking "New
+  // chat" fired one POST per click and they all landed at once; a repeat Delete
+  // hit an already-deleted row and surfaced a bogus 404 banner.
+  const [creating, setCreating] = useState(false);
+  const [pendingIds, setPendingIds] = useState<Set<number>>(new Set());
   const [error, setError] = useState<AppError | null>(null);
   const [mobileView, setMobileView] = useState<'list' | 'chat'>('list');
+  // Bumped per selection so a slower earlier fetch can't overwrite a newer one.
+  const selectRequestRef = useRef(0);
+
+  const clearPending = (id: number) =>
+    setPendingIds((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
 
   useEffect(() => {
     let cancelled = false;
@@ -66,15 +80,27 @@ function AssistantContent() {
     if (detail?.id === id) return;
     setDetail(null);
     setLoadingDetail(true);
+
+    const requestId = ++selectRequestRef.current;
+    const isCurrent = () => requestId === selectRequestRef.current;
+
     conversationsApi
       .get(id)
-      .then(setDetail)
-      .catch((err) => setError(createAppError(err)))
-      .finally(() => setLoadingDetail(false));
+      .then((loaded) => {
+        if (isCurrent()) setDetail(loaded);
+      })
+      .catch((err) => {
+        if (isCurrent()) setError(createAppError(err));
+      })
+      .finally(() => {
+        if (isCurrent()) setLoadingDetail(false);
+      });
   };
 
   const newChat = () => {
+    if (creating) return;
     setError(null);
+    setCreating(true);
     conversationsApi
       .create()
       .then((created) => {
@@ -83,7 +109,8 @@ function AssistantContent() {
         setDetail(created);
         setMobileView('chat');
       })
-      .catch((err) => setError(createAppError(err)));
+      .catch((err) => setError(createAppError(err)))
+      .finally(() => setCreating(false));
   };
 
   const send = async (content: string) => {
@@ -136,6 +163,8 @@ function AssistantContent() {
   };
 
   const renameConversation = (id: number, title: string) => {
+    if (pendingIds.has(id)) return;
+    setPendingIds((prev) => new Set(prev).add(id));
     conversationsApi
       .rename(id, title)
       .then((updated) => {
@@ -144,21 +173,42 @@ function AssistantContent() {
         );
         setDetail((d) => (d && d.id === id ? { ...d, ...updated } : d));
       })
-      .catch((err) => setError(createAppError(err)));
+      .catch((err) => setError(createAppError(err)))
+      .finally(() => clearPending(id));
   };
 
   const deleteConversation = (id: number) => {
+    if (pendingIds.has(id)) return;
+    setError(null);
+    setPendingIds((prev) => new Set(prev).add(id));
+
+    // Drop the row immediately so it cannot be clicked a second time, and put
+    // it back at the same position if the request fails. Active-conversation
+    // state only changes once the server confirms the delete.
+    const index = conversations.findIndex((c) => c.id === id);
+    const removed = index >= 0 ? conversations[index] : null;
+    setConversations((prev) => prev.filter((c) => c.id !== id));
+
     conversationsApi
       .remove(id)
       .then(() => {
-        setConversations((prev) => prev.filter((c) => c.id !== id));
         if (activeId === id) {
           setActiveId(null);
           setDetail(null);
           setMobileView('list');
         }
       })
-      .catch((err) => setError(createAppError(err)));
+      .catch((err) => {
+        if (removed) {
+          setConversations((prev) => {
+            const next = [...prev];
+            next.splice(index, 0, removed);
+            return next;
+          });
+        }
+        setError(createAppError(err));
+      })
+      .finally(() => clearPending(id));
   };
 
   return (
@@ -172,7 +222,8 @@ function AssistantContent() {
         <ConversationSidebar
           conversations={conversations}
           activeId={activeId}
-          busy={loadingList}
+          busy={loadingList || creating}
+          pendingIds={pendingIds}
           onSelect={selectConversation}
           onNew={newChat}
           onRename={renameConversation}

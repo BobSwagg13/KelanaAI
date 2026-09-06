@@ -12,7 +12,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '@/components/providers/AuthProvider';
 import { cn } from '@/lib/utils/cn';
@@ -24,6 +24,7 @@ interface NavbarProps {
 export function Navbar({ className }: NavbarProps) {
   const { user, initializing, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Every link and button inside the panel calls this, so navigating always
@@ -49,36 +50,53 @@ export function Navbar({ className }: NavbarProps) {
   const linkClass =
     'rounded text-sm font-semibold text-brand-muted transition-colors hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary';
 
+  /**
+   * Whether a nav entry represents the page we're on.
+   *
+   * `/` must match exactly or it would light up everywhere. `/trips` matches by
+   * prefix so a trip detail page keeps "History" highlighted. `/#travel-planner`
+   * is a hash link into the home page and `usePathname()` drops the hash, so it
+   * can only ever be current when we're already on `/`.
+   */
+  const isActive = (href: string): boolean => {
+    const path = href.split('#')[0] || '/';
+    if (path === '/') return pathname === '/';
+    return pathname === path || pathname.startsWith(`${path}/`);
+  };
+
   // Rendered twice: inline on desktop (`mobile=false`) and stacked in the panel
   // (`mobile=true`, with taller tap targets).
   const renderLinks = (mobile: boolean) => {
     const itemClass = mobile ? cn(linkClass, 'block py-2.5') : linkClass;
 
+    const navLink = (href: string, label: string, testId?: string) => {
+      const active = isActive(href);
+      return (
+        <Link
+          href={href}
+          onClick={closeMenu}
+          data-testid={testId}
+          aria-current={active ? 'page' : undefined}
+          className={cn(
+            itemClass,
+            active &&
+              (mobile
+                ? 'border-l-2 border-brand-primary pl-3 text-brand-primary'
+                : 'text-brand-primary underline decoration-2 underline-offset-8')
+          )}
+        >
+          {label}
+        </Link>
+      );
+    };
+
     if (user) {
       return (
         <>
-          <Link href="/#travel-planner" className={itemClass} onClick={closeMenu}>
-            Plan Trip
-          </Link>
-          <Link href="/trips" className={itemClass} onClick={closeMenu}>
-            History
-          </Link>
-          <Link
-            href="/assistant"
-            className={itemClass}
-            data-testid="nav-assistant"
-            onClick={closeMenu}
-          >
-            Assistant
-          </Link>
-          <Link
-            href="/profile"
-            className={itemClass}
-            data-testid="nav-profile"
-            onClick={closeMenu}
-          >
-            Profile
-          </Link>
+          {navLink('/#travel-planner', 'Plan Trip')}
+          {navLink('/trips', 'History')}
+          {navLink('/assistant', 'Assistant', 'nav-assistant')}
+          {navLink('/profile', 'Profile', 'nav-profile')}
           <button
             type="button"
             onClick={handleLogout}
@@ -94,14 +112,7 @@ export function Navbar({ className }: NavbarProps) {
 
     return (
       <>
-        <Link
-          href="/login"
-          className={itemClass}
-          data-testid="nav-login"
-          onClick={closeMenu}
-        >
-          Sign in
-        </Link>
+        {navLink('/login', 'Sign in', 'nav-login')}
         <Link
           href="/register"
           data-testid="nav-register"

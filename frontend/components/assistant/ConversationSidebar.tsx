@@ -10,6 +10,8 @@ interface ConversationSidebarProps {
   conversations: ConversationSummary[];
   activeId: number | null;
   busy?: boolean;
+  /** Rows with a rename or delete in flight; their controls are disabled. */
+  pendingIds?: Set<number>;
   onSelect: (id: number) => void;
   onNew: () => void;
   onRename: (id: number, title: string) => void;
@@ -22,10 +24,13 @@ function relativeTime(iso: string): string {
   return formatDistanceToNow(date, { addSuffix: true });
 }
 
+const NO_PENDING: Set<number> = new Set();
+
 export function ConversationSidebar({
   conversations,
   activeId,
   busy,
+  pendingIds = NO_PENDING,
   onSelect,
   onNew,
   onRename,
@@ -74,6 +79,7 @@ export function ConversationSidebar({
               const isActive = conversation.id === activeId;
               const isEditing = conversation.id === editingId;
               const isConfirming = conversation.id === confirmingId;
+              const isPending = pendingIds.has(conversation.id);
 
               return (
                 <li key={conversation.id}>
@@ -118,11 +124,12 @@ export function ConversationSidebar({
                         <span className="min-w-0 flex-1 truncate text-brand-muted">Delete this chat?</span>
                         <button
                           type="button"
+                          disabled={isPending}
                           onClick={() => {
                             onDelete(conversation.id);
                             setConfirmingId(null);
                           }}
-                          className="shrink-0 rounded px-2 py-1 text-xs font-semibold text-red-600 hover:bg-red-50"
+                          className="shrink-0 rounded px-2 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 disabled:opacity-50"
                         >
                           Delete
                         </button>
@@ -155,20 +162,22 @@ export function ConversationSidebar({
                         </button>
                         <button
                           type="button"
+                          disabled={isPending}
                           onClick={() => startEditing(conversation)}
                           aria-label="Rename conversation"
-                          className="shrink-0 rounded p-1 text-brand-muted opacity-0 transition-opacity hover:text-brand-primary focus-visible:opacity-100 group-hover:opacity-100"
+                          className="shrink-0 rounded p-1 text-brand-muted opacity-0 transition-opacity hover:text-brand-primary focus-visible:opacity-100 group-hover:opacity-100 disabled:opacity-30"
                         >
                           <Pencil size={14} />
                         </button>
                         <button
                           type="button"
+                          disabled={isPending}
                           onClick={() => {
                             setEditingId(null);
                             setConfirmingId(conversation.id);
                           }}
                           aria-label="Delete conversation"
-                          className="shrink-0 rounded p-1 text-brand-muted opacity-0 transition-opacity hover:text-red-600 focus-visible:opacity-100 group-hover:opacity-100"
+                          className="shrink-0 rounded p-1 text-brand-muted opacity-0 transition-opacity hover:text-red-600 focus-visible:opacity-100 group-hover:opacity-100 disabled:opacity-30"
                         >
                           <Trash2 size={14} />
                         </button>
