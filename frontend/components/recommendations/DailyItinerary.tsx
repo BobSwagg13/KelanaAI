@@ -16,11 +16,15 @@ import {
 } from 'lucide-react';
 import type { DailyItinerary as DailyItineraryType, Activity, ActivityCategory } from '@/lib/types/recommendation';
 import { formatCurrency } from '@/lib/utils/budget';
+import { MapLink } from './MapLink';
 import { cn } from '@/lib/utils/cn';
 
 export interface DailyItineraryProps {
   itinerary: DailyItineraryType[];
   currency: string;
+  /** Threaded down so each activity's map link can be scoped to the city. */
+  destination: string;
+  country?: string | null;
 }
 
 const CATEGORY_ICONS: Record<ActivityCategory, LucideIcon> = {
@@ -32,7 +36,15 @@ const CATEGORY_ICONS: Record<ActivityCategory, LucideIcon> = {
   shopping: ShoppingBag,
 };
 
-function ActivityItem({ activity }: { activity: Activity }) {
+function ActivityItem({
+  activity,
+  destination,
+  country,
+}: {
+  activity: Activity;
+  destination: string;
+  country?: string | null;
+}) {
   const Icon = CATEGORY_ICONS[activity.category] || Landmark;
   return (
     <li className="flex gap-3 py-2">
@@ -40,7 +52,13 @@ function ActivityItem({ activity }: { activity: Activity }) {
       <div className="min-w-0">
         <p className="font-medium text-gray-900">
           {activity.time && <span className="text-gray-400 font-normal mr-2">{activity.time}</span>}
-          {activity.name}
+          {activity.name}{' '}
+          <MapLink
+            name={activity.name}
+            location={activity.location}
+            destination={destination}
+            country={country}
+          />
         </p>
         <p className="text-sm text-gray-600">{activity.description}</p>
         <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-500">
@@ -63,21 +81,41 @@ function ActivityItem({ activity }: { activity: Activity }) {
   );
 }
 
-function TimeBlock({ label, activities }: { label: string; activities: Activity[] }) {
+function TimeBlock({
+  label,
+  activities,
+  destination,
+  country,
+}: {
+  label: string;
+  activities: Activity[];
+  destination: string;
+  country?: string | null;
+}) {
   if (!activities?.length) return null;
   return (
     <div>
       <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">{label}</h4>
       <ul className="divide-y divide-gray-100">
         {activities.map((activity, i) => (
-          <ActivityItem key={i} activity={activity} />
+          <ActivityItem
+            key={i}
+            activity={activity}
+            destination={destination}
+            country={country}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-export function DailyItinerary({ itinerary, currency }: DailyItineraryProps) {
+export function DailyItinerary({
+  itinerary,
+  currency,
+  destination,
+  country,
+}: DailyItineraryProps) {
   const [openDay, setOpenDay] = useState<number | null>(itinerary[0]?.day ?? null);
 
   if (!itinerary?.length) {
@@ -124,9 +162,24 @@ export function DailyItinerary({ itinerary, currency }: DailyItineraryProps) {
                   className="overflow-hidden"
                 >
                   <div className="px-4 sm:px-6 pb-4 flex flex-col gap-4 border-t border-gray-100 pt-3">
-                    <TimeBlock label="Morning" activities={day.morning} />
-                    <TimeBlock label="Afternoon" activities={day.afternoon} />
-                    <TimeBlock label="Evening" activities={day.evening} />
+                    <TimeBlock
+                      label="Morning"
+                      activities={day.morning}
+                      destination={destination}
+                      country={country}
+                    />
+                    <TimeBlock
+                      label="Afternoon"
+                      activities={day.afternoon}
+                      destination={destination}
+                      country={country}
+                    />
+                    <TimeBlock
+                      label="Evening"
+                      activities={day.evening}
+                      destination={destination}
+                      country={country}
+                    />
                     <p className="text-sm font-medium sm:hidden">
                       Estimated cost: {formatCurrency(day.estimated_daily_cost, currency)}
                     </p>

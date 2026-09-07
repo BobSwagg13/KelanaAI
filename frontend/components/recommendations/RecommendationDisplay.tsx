@@ -8,6 +8,7 @@ import { resolveApiUrl } from '@/lib/api/client';
 import type { Trip } from '@/lib/types/trip';
 import { formatCurrency } from '@/lib/utils/budget';
 import { DailyItinerary } from './DailyItinerary';
+import { MapLink } from './MapLink';
 import { BudgetVisualization } from './BudgetVisualization';
 import { TravelTips } from './TravelTips';
 import { Card } from '@/components/shared/Card';
@@ -126,7 +127,12 @@ export function RecommendationDisplay({
       </motion.div>
 
       <Section title="Daily Itinerary">
-        <DailyItinerary itinerary={daily_itinerary} currency={trip.currency} />
+        <DailyItinerary
+          itinerary={daily_itinerary}
+          currency={trip.currency}
+          destination={trip_overview.destination}
+          country={trip_overview.country}
+        />
       </Section>
 
       <Section title="Budget Breakdown" delay={0.05}>
@@ -142,7 +148,15 @@ export function RecommendationDisplay({
               <Card key={i} hoverable className="flex gap-3">
                 <Utensils size={20} className="mt-0.5 shrink-0" style={{ color: 'var(--brand-primary)' }} />
                 <div>
-                  <p className="font-semibold text-gray-900">{food.name}</p>
+                  <p className="font-semibold text-gray-900">
+                    {food.name}{' '}
+                    <MapLink
+                      name={food.name}
+                      location={food.location}
+                      destination={trip_overview.destination}
+                      country={trip_overview.country}
+                    />
+                  </p>
                   <p className="text-sm text-gray-600">{food.description}</p>
                   {food.location && <p className="text-xs text-gray-400 mt-1">{food.location}</p>}
                   {food.must_try_dishes?.length > 0 && (
