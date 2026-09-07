@@ -81,7 +81,7 @@ export function CardOptionSelector({
     'absolute top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-brand-border bg-white p-1.5 shadow-md transition-colors hover:text-brand-primary disabled:pointer-events-none disabled:opacity-0 sm:block';
 
   return (
-    <fieldset className={cn('flex flex-col gap-2', className)}>
+    <fieldset className={cn('flex w-full min-w-0 flex-col gap-2', className)}>
       <legend className="text-sm font-medium text-gray-800 mb-1">
         {legend}
         <span className="ml-0.5 text-red-500" aria-hidden="true">
@@ -89,7 +89,7 @@ export function CardOptionSelector({
         </span>
       </legend>
 
-      <div className="relative">
+      <div className="relative min-w-0">
         {scrollable && (
           <button
             type="button"

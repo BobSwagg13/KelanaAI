@@ -65,7 +65,10 @@ function PlannerContent() {
         {loading && loadingStage && <LoadingState stage={loadingStage} />}
 
         {!loading && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          // [&>*]:min-w-0: grid items default to min-width:auto, so the form's
+          // horizontally scrolling selectors would otherwise widen this column
+          // past its track.
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start [&>*]:min-w-0">
             <DestinationMap
               onLocationSelect={setSelectedLocation}
               selectedLocation={selectedLocation}

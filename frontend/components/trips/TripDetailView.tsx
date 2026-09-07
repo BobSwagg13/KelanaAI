@@ -142,7 +142,7 @@ export function TripDetailView({ tripId }: TripDetailViewProps) {
       </div>
 
       {isEditing && (
-        <div id="edit-trip-panel" className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div id="edit-trip-panel" className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start [&>*]:min-w-0">
           <DestinationMap onLocationSelect={setEditLocation} selectedLocation={editLocation} />
           <TravelForm
             selectedLocation={editLocation}

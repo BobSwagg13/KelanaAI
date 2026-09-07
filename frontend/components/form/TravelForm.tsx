@@ -99,7 +99,10 @@ export function TravelForm({
       aria-busy={isLoading}
       className="flex flex-col gap-6 rounded-2xl bg-white p-5 sm:p-8 shadow-sm border border-brand-border"
     >
-      <fieldset disabled={isLoading} className="flex flex-col gap-6">
+      {/* min-w-0: a fieldset defaults to min-width:min-content and flex children
+          to min-width:auto, so without it the horizontally scrolling
+          selectors size this to their full content and overflow the card. */}
+      <fieldset disabled={isLoading} className="flex min-w-0 flex-col gap-6">
         <DestinationInput selectedLocation={selectedLocation} onLocationSelect={onLocationSelect} />
         {errors.destination && (
           <p role="alert" className="-mt-4 text-sm text-red-600">
