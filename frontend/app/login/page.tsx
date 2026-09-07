@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { Button } from '@/components/shared/Button';
+import { PasswordInput } from '@/components/shared/PasswordInput';
 import { ErrorDisplay } from '@/components/shared/ErrorDisplay';
 import { LoadingState } from '@/components/shared/LoadingState';
 import { useAuth } from '@/components/providers/AuthProvider';
@@ -103,14 +104,12 @@ function LoginForm() {
           <label htmlFor="password" className="text-sm font-medium text-gray-800">
             Password
           </label>
-          <input
+          <PasswordInput
             id="password"
-            type="password"
             autoComplete="current-password"
             data-testid="login-password"
             aria-invalid={Boolean(errors.password)}
             aria-describedby={errors.password ? 'password-error' : undefined}
-            className="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
             {...register('password')}
           />
           {errors.password && (

@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { Button } from '@/components/shared/Button';
+import { PasswordInput } from '@/components/shared/PasswordInput';
 import { ErrorDisplay } from '@/components/shared/ErrorDisplay';
 import { useAuth } from '@/components/providers/AuthProvider';
 import { MIN_PASSWORD_LENGTH, registerSchema, type RegisterFormData } from '@/lib/types/auth';
@@ -54,16 +55,27 @@ export default function RegisterPage() {
       <label htmlFor={id} className="text-sm font-medium text-gray-800">
         {label}
       </label>
-      <input
-        id={id}
-        type={type}
-        autoComplete={autoComplete}
-        data-testid={`register-${id}`}
-        aria-invalid={Boolean(errors[id])}
-        aria-describedby={errors[id] ? `${id}-error` : hint ? `${id}-hint` : undefined}
-        className="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
-        {...register(id)}
-      />
+      {type === 'password' ? (
+        <PasswordInput
+          id={id}
+          autoComplete={autoComplete}
+          data-testid={`register-${id}`}
+          aria-invalid={Boolean(errors[id])}
+          aria-describedby={errors[id] ? `${id}-error` : hint ? `${id}-hint` : undefined}
+          {...register(id)}
+        />
+      ) : (
+        <input
+          id={id}
+          type={type}
+          autoComplete={autoComplete}
+          data-testid={`register-${id}`}
+          aria-invalid={Boolean(errors[id])}
+          aria-describedby={errors[id] ? `${id}-error` : hint ? `${id}-hint` : undefined}
+          className="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
+          {...register(id)}
+        />
+      )}
       {errors[id] ? (
         <p id={`${id}-error`} role="alert" className="text-sm text-red-600">
           {errors[id]?.message}
