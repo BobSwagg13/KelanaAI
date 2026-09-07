@@ -47,13 +47,13 @@ export function TripsBrowser() {
   const [deleteError, setDeleteError] = useState<AppError | null>(null);
   const queryClient = useQueryClient();
 
-  // Gated on isFetching rather than isLoading: the list waits for a fresh
-  // response instead of flashing the previously cached trips and correcting
-  // them, which made a just-deleted trip briefly reappear.
+  // Cached across navigations: trips -> detail -> back paints instantly and
+  // revalidates behind the render. Deletes and creates write through to this
+  // cache, so it is not showing anything the server would disagree with.
   const {
     data: trips,
     error: queryError,
-    isFetching,
+    isLoading,
     refetch,
   } = useQuery({
     queryKey: tripKeys.list(),
@@ -137,7 +137,7 @@ export function TripsBrowser() {
     );
   }
 
-  if (isFetching || !trips) {
+  if (isLoading || !trips) {
     return <LoadingState stage="loading" message="Loading your trips..." />;
   }
 

@@ -7,7 +7,8 @@ from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, EmailStr, Field
-from sqlalchemy import func
+from sqlalchemy import func, text
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from database import SessionLocal, init_db
@@ -268,6 +269,27 @@ def trip_to_dict(trip: Trip) -> dict:
 @app.get("/")
 def home():
     return {"message": "Welcome to KelanaAI"}
+
+
+@app.get("/api/v1/health")
+def health(db: Session = Depends(get_db)):
+    """Liveness plus a real database round trip.
+
+    The frontend pings this on load purely to wake things up: Neon's free tier
+    auto-suspends after a few minutes idle, so the first query of a session
+    pays a cold start. Touching the database here means that happens while the
+    user is still reading the page rather than on their first real action.
+    Unauthenticated, and returns no data — it is also what a deployment
+    readiness probe should point at.
+    """
+    try:
+        db.execute(text("SELECT 1"))
+        database = "ok"
+    except SQLAlchemyError:
+        logging.exception("Health check could not reach the database")
+        database = "unavailable"
+
+    return {"status": "ok", "database": database}
 
 
 @app.post("/api/v1/auth/register", status_code=status.HTTP_201_CREATED)

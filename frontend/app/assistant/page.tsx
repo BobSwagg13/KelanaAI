@@ -215,7 +215,7 @@ function AssistantContent() {
         <ConversationSidebar
           conversations={conversations}
           activeId={effectiveId}
-          busy={listQuery.isFetching || creating}
+          busy={listQuery.isLoading || creating}
           pendingIds={pendingIds}
           onSelect={selectConversation}
           onNew={newChat}
@@ -232,7 +232,7 @@ function AssistantContent() {
       >
         <ChatPanel
           conversation={detail}
-          loading={detailQuery.isFetching}
+          loading={detailQuery.isLoading}
           sending={sending}
           error={error}
           onSend={send}

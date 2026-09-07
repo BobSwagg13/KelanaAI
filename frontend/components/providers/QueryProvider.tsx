@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { apiClient } from '@/lib/api/client';
 
 /**
  * Holds the app's query cache.
@@ -19,11 +20,12 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            // Zero, not a window: pages wait for a fresh response rather than
-            // painting cached data and correcting it a moment later. The cache
-            // still earns its keep through request dedup, mutation seeding and
-            // retries.
-            staleTime: 0,
+            // Lists paint from cache and revalidate behind it. This is only
+            // safe because every mutation now writes through to the cache, so
+            // what it holds is already correct — the earlier stale flash was a
+            // cache-truthfulness bug, not a caching one. /profile still waits
+            // for fresh counters via its own gate.
+            staleTime: 60_000,
             gcTime: 5 * 60_000,
             refetchOnWindowFocus: false,
             retry: 1,
@@ -31,6 +33,15 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
         },
       })
   );
+
+  // Wake the backend and its database while the user is still reading the
+  // first page. Neon's free tier auto-suspends after a few minutes idle, so
+  // without this the first real action of a session pays the cold start. The
+  // endpoint runs a SELECT 1 and returns nothing we use, so failures are
+  // ignored outright — this must never surface an error.
+  useEffect(() => {
+    apiClient.get('/api/v1/health').catch(() => {});
+  }, []);
 
   return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
 }

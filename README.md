@@ -211,6 +211,7 @@ rows.
 
 | Method | Path | Purpose |
 |---|---|---|
+| `GET` | `/api/v1/health` | Liveness + a database round trip. Unauthenticated; point readiness probes here |
 | `POST` | `/api/v1/auth/register` | Create an account |
 | `POST` | `/api/v1/auth/login` | Exchange credentials for a token |
 | `GET` | `/api/v1/auth/me` | Current user + profile counters |
