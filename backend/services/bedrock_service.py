@@ -177,6 +177,52 @@ def _trip_context(trip) -> str:
 - Travel Month: {trip.travel_month}"""
 
 
+# What each travel style and group should actually change about a day. Without
+# these the prompt merely restated the traveller's choices back at the model and
+# they barely moved the itinerary.
+STYLE_GUIDANCE = {
+    "sightseeing": "lead with the city's signature landmarks and viewpoints",
+    "cultural": "lean on museums, heritage sites, traditions and performances",
+    "adventure": "favour hiking, water sports and physically active days",
+    "nature": "favour parks, gardens, wildlife and scenery, including a day trip out of the city",
+    "food": "build days around markets, street food, cooking classes and notable restaurants",
+    "relaxed": "keep an unhurried pace with fewer stops, long meals, cafes and parks",
+    # Legacy ids from when style doubled as a budget tier. Regenerating an old
+    # trip should still get useful guidance.
+    "backpacker": "favour free and low-cost sights, local transport and casual food",
+    "standard": "keep a balanced mix of paid highlights and free wandering",
+    "luxury": "favour premium, curated and reservation-worthy experiences",
+}
+
+GROUP_GUIDANCE = {
+    "solo": (
+        "keep it flexible and easy to do alone - walkable central areas, "
+        "activities that are comfortable solo, and safe choices after dark"
+    ),
+    "couple": "favour scenic and romantic choices and quieter dinners for two",
+    "family": (
+        "keep the pace child-friendly - shorter journeys, somewhere to run "
+        "around, food children will eat, and no late nights"
+    ),
+    "friends": (
+        "favour places that work for a group - venues that take a booking, "
+        "shared activities, and livelier evenings"
+    ),
+}
+
+
+def _audience_guidance(trip) -> str:
+    """One line telling the model what the style and group should change."""
+    parts = []
+    style = STYLE_GUIDANCE.get((trip.travel_style or "").lower())
+    if style:
+        parts.append(f"Their travel style is {trip.travel_style}: {style}.")
+    group = GROUP_GUIDANCE.get((trip.travel_group or "").lower())
+    if group:
+        parts.append(f"They are travelling as {trip.travel_group}: {group}.")
+    return " ".join(parts)
+
+
 # --------------------------------------------------------------------------- #
 # outline                                                                      #
 # --------------------------------------------------------------------------- #
@@ -188,6 +234,9 @@ You are KelanaAI, an expert travel planner.
 
 CONTEXT:
 {_trip_context(trip)}
+
+AUDIENCE:
+{_audience_guidance(trip)}
 
 TASK:
 Sketch a day-by-day outline for the whole trip. Give each day a theme, the
@@ -258,6 +307,9 @@ You are KelanaAI, an expert travel planner.
 
 CONTEXT:
 {_trip_context(trip)}
+
+AUDIENCE:
+{_audience_guidance(trip)}
 
 OUTLINE FOR THE WHOLE TRIP:
 {json.dumps(outline, ensure_ascii=False)}
@@ -368,6 +420,8 @@ Rules:
   same restaurant appearing on half the days.
 - Keep lunch and any extra stops in or near that day's area, and do not use the
   same venue twice across the days you were assigned.
+- Every day must reflect the AUDIENCE note above: it decides what kind of
+  places belong in the plan and how hard the days are pushed.
 - Lunch must be a different venue from that day's dinner — never send the
   traveller to the same restaurant twice in one day.
 - All monetary values in {trip.currency}, as plain numbers.
@@ -390,13 +444,33 @@ def _normalize_categories(day_objs: list[dict]) -> None:
                 activity["category"] = mapped
 
 
+def _has_all_blocks(day_obj: dict) -> bool:
+    return all(day_obj.get(block) for block in TIME_BLOCKS)
+
+
 def _is_fully_scheduled(day_objs: list[dict], days: list[int]) -> bool:
     """Whether the batch returned every day it owns with all three blocks filled."""
     by_day = {d.get("day"): d for d in day_objs}
-    return all(
-        day in by_day and all(by_day[day].get(block) for block in TIME_BLOCKS)
-        for day in days
-    )
+    return all(day in by_day and _has_all_blocks(by_day[day]) for day in days)
+
+
+def _merge_attempts(first: list[dict], second: list[dict], days: list[int]) -> list[dict]:
+    """Best available object for each day across two attempts.
+
+    The attempts usually fall short on *different* days, so combining them
+    recovers a complete batch far more often than picking one wholesale — which
+    previously failed the entire trip whenever neither attempt was perfect.
+    """
+    wanted = set(days)
+    best: dict[int, dict] = {}
+    for obj in [*first, *second]:
+        day = obj.get("day")
+        if day not in wanted:
+            continue
+        current = best.get(day)
+        if current is None or (not _has_all_blocks(current) and _has_all_blocks(obj)):
+            best[day] = obj
+    return [best[d] for d in sorted(best)]
 
 
 def _generate_day_batch(trip, outline: dict, days: list[int]) -> list[dict]:
@@ -419,26 +493,26 @@ def _generate_day_batch(trip, outline: dict, days: list[int]) -> list[dict]:
         return payload.get("daily_itinerary") or []
 
     try:
-        day_objs = attempt()
-        if _is_fully_scheduled(day_objs, days):
-            _normalize_categories(day_objs)
-            return day_objs
+        first = attempt()
+        if _is_fully_scheduled(first, days):
+            _normalize_categories(first)
+            return first
         logger.warning("%s came back thin for trip %s; retrying", label, trip_id)
     except RecommendationError:
         logger.warning("%s failed for trip %s; retrying", label, trip_id)
-        day_objs = []
+        first = []
 
     try:
-        retried = attempt()
+        second = attempt()
     except RecommendationError:
-        if day_objs:
-            _normalize_categories(day_objs)
-            return day_objs
+        if first:
+            _normalize_categories(first)
+            return first
         raise
 
-    best = retried if _is_fully_scheduled(retried, days) or not day_objs else day_objs
-    _normalize_categories(best)
-    return best
+    combined = _merge_attempts(first, second, days)
+    _normalize_categories(combined)
+    return combined
 
 
 # --------------------------------------------------------------------------- #

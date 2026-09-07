@@ -1,12 +1,14 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
-  Backpack,
-  Building2,
+  Camera,
+  TreePine,
+  Utensils,
+  Waves,
   Users,
-  Gem,
+  UsersRound,
   Mountain,
   Landmark,
   User,
@@ -14,6 +16,7 @@ import {
   Globe,
   CalendarDays,
   Sparkles,
+  Trash2,
   type LucideIcon,
 } from 'lucide-react';
 import { Card } from '@/components/shared/Card';
@@ -27,10 +30,12 @@ import type { Trip } from '@/lib/types/trip';
 import { cn } from '@/lib/utils/cn';
 
 const ICONS: Record<string, LucideIcon> = {
-  Backpack,
-  Building2,
+  Camera,
+  TreePine,
+  Utensils,
+  Waves,
   Users,
-  Gem,
+  UsersRound,
   Mountain,
   Landmark,
   User,
@@ -65,6 +70,10 @@ function Badge({ className, children }: { className?: string; children: React.Re
 
 export interface TripCardProps {
   trip: Trip;
+  /** Omit to render a card with no delete affordance. */
+  onDelete?: (id: number) => void;
+  /** A delete for this trip is in flight. */
+  deleting?: boolean;
 }
 
 /**
@@ -74,7 +83,8 @@ export interface TripCardProps {
  * have NULL `country` / `travel_style` / `country_code` despite the `Trip` type
  * declaring them required.
  */
-export function TripCard({ trip }: TripCardProps) {
+export function TripCard({ trip, onDelete, deleting }: TripCardProps) {
+  const [confirming, setConfirming] = useState(false);
   const style = getTravelStyle(trip.travel_style);
   const StyleIcon = style ? ICONS[style.icon] : undefined;
   const group = getTravelGroup(trip.travel_group);
@@ -89,12 +99,55 @@ export function TripCard({ trip }: TripCardProps) {
       : null;
 
   return (
-    <Link
-      href={`/trips/${trip.id}`}
-      data-testid={`trip-card-${trip.id}`}
-      className="rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
-    >
-      <Card hoverable className="h-full flex flex-col gap-3 overflow-hidden">
+    // The delete control is a sibling of the link, not a child: a button inside
+    // an anchor is invalid, and nesting it would also make every delete click
+    // navigate to the trip.
+    <div className="relative h-full">
+      {onDelete && (
+        <div className="absolute right-2 top-2 z-10 flex items-center gap-1">
+          {confirming ? (
+            <>
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => {
+                  onDelete(trip.id);
+                  setConfirming(false);
+                }}
+                data-testid={`trip-delete-confirm-${trip.id}`}
+                className="rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-red-600 shadow-sm backdrop-blur transition-colors hover:bg-red-50 disabled:opacity-50"
+              >
+                Delete
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirming(false)}
+                className="rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-brand-muted shadow-sm backdrop-blur transition-colors hover:text-brand-ink"
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              disabled={deleting}
+              onClick={() => setConfirming(true)}
+              aria-label={`Delete trip to ${trip.destination}`}
+              data-testid={`trip-delete-${trip.id}`}
+              className="rounded-full bg-white/90 p-1.5 text-brand-muted shadow-sm backdrop-blur transition-colors hover:text-red-600 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+            >
+              <Trash2 size={14} />
+            </button>
+          )}
+        </div>
+      )}
+
+      <Link
+        href={`/trips/${trip.id}`}
+        data-testid={`trip-card-${trip.id}`}
+        className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+      >
+        <Card hoverable className={cn('h-full flex flex-col gap-3 overflow-hidden', deleting && 'opacity-50')}>
         {trip.image_url && (
           <div className="-mx-4 -mt-4 sm:-mx-6 sm:-mt-6 mb-1 overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element --
@@ -165,7 +218,8 @@ export function TripCard({ trip }: TripCardProps) {
             </span>
           )}
         </div>
-      </Card>
-    </Link>
+        </Card>
+      </Link>
+    </div>
   );
 }

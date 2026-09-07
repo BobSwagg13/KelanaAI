@@ -15,6 +15,12 @@ interface AuthContextValue {
    * legitimately logged-in user to /login.
    */
   initializing: boolean;
+  /**
+   * A /me request is in flight on an already-established session. Distinct
+   * from `initializing`, which gates the whole app: this only lets a screen
+   * that renders live counters wait rather than show stale ones.
+   */
+  refreshing: boolean;
   login: (data: LoginRequest) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => void;
@@ -59,6 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const user = hasToken === true ? (query.data ?? null) : null;
   const initializing = hasToken === null || (hasToken === true && query.isLoading);
+  const refreshing = query.isFetching;
 
   const login = useCallback(
     async (data: LoginRequest) => {
@@ -95,7 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [queryClient]);
 
   return (
-    <AuthContext.Provider value={{ user, initializing, login, register, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, initializing, refreshing, login, register, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

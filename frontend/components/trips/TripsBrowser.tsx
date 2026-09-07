@@ -2,11 +2,11 @@
 
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Search, SearchX, MapPinned, ChevronLeft, ChevronRight } from 'lucide-react';
 import { tripsApi } from '@/lib/api/trips';
 import { tripKeys } from '@/lib/queries/keys';
-import { createAppError } from '@/lib/types/errors';
+import { createAppError, type AppError } from '@/lib/types/errors';
 import { tripCreatedAtMs, tripSearchText, type Trip } from '@/lib/types/trip';
 import { LoadingState } from '@/components/shared/LoadingState';
 import { ErrorDisplay } from '@/components/shared/ErrorDisplay';
@@ -43,13 +43,17 @@ export function TripsBrowser() {
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<SortOrder>('latest');
   const [page, setPage] = useState(1);
+  const [deletingIds, setDeletingIds] = useState<Set<number>>(new Set());
+  const [deleteError, setDeleteError] = useState<AppError | null>(null);
+  const queryClient = useQueryClient();
 
-  // Cached across navigations, so trips -> detail -> back paints instantly and
-  // revalidates in the background instead of showing a spinner every time.
+  // Gated on isFetching rather than isLoading: the list waits for a fresh
+  // response instead of flashing the previously cached trips and correcting
+  // them, which made a just-deleted trip briefly reappear.
   const {
     data: trips,
     error: queryError,
-    isLoading,
+    isFetching,
     refetch,
   } = useQuery({
     queryKey: tripKeys.list(),
@@ -58,7 +62,35 @@ export function TripsBrowser() {
 
   // The axios interceptor already rejects with an AppError; createAppError
   // short-circuits on one, so this just narrows the type.
-  const error = queryError ? createAppError(queryError) : null;
+  const error = deleteError ?? (queryError ? createAppError(queryError) : null);
+
+  const handleDelete = (id: number) => {
+    if (deletingIds.has(id)) return;
+    setDeleteError(null);
+    setDeletingIds((prev) => new Set(prev).add(id));
+
+    // Drop the card immediately so it cannot be confirmed twice. The whole
+    // previous list is kept so a failure restores the original order exactly.
+    const previous = queryClient.getQueryData<Trip[]>(tripKeys.list()) ?? [];
+    queryClient.setQueryData<Trip[]>(tripKeys.list(), previous.filter((t) => t.id !== id));
+
+    tripsApi
+      .deleteTrip(id)
+      .then(() => {
+        queryClient.removeQueries({ queryKey: tripKeys.detail(id) });
+      })
+      .catch((err) => {
+        queryClient.setQueryData(tripKeys.list(), previous);
+        setDeleteError(createAppError(err));
+      })
+      .finally(() =>
+        setDeletingIds((prev) => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        })
+      );
+  };
 
   const handleRetry = () => {
     void refetch();
@@ -96,10 +128,16 @@ export function TripsBrowser() {
   const pageItems = visible.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   if (error) {
-    return <ErrorDisplay error={error} onRetry={handleRetry} />;
+    return (
+      <ErrorDisplay
+        error={error}
+        onRetry={handleRetry}
+        onDismiss={deleteError ? () => setDeleteError(null) : undefined}
+      />
+    );
   }
 
-  if (isLoading || !trips) {
+  if (isFetching || !trips) {
     return <LoadingState stage="loading" message="Loading your trips..." />;
   }
 
@@ -182,7 +220,12 @@ export function TripsBrowser() {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {pageItems.map((trip) => (
-            <TripCard key={trip.id} trip={trip} />
+            <TripCard
+              key={trip.id}
+              trip={trip}
+              onDelete={handleDelete}
+              deleting={deletingIds.has(trip.id)}
+            />
           ))}
         </div>
       )}

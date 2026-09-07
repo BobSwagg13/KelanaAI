@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LogOut, Mail, CalendarDays, MapPinned, Sparkles } from 'lucide-react';
@@ -8,6 +8,7 @@ import { RequireAuth } from '@/components/auth/RequireAuth';
 import { useAuth } from '@/components/providers/AuthProvider';
 import { Card } from '@/components/shared/Card';
 import { Button } from '@/components/shared/Button';
+import { LoadingState } from '@/components/shared/LoadingState';
 
 function Stat({
   icon: Icon,
@@ -28,18 +29,24 @@ function Stat({
 }
 
 function ProfileContent() {
-  const { user, logout, refreshUser } = useAuth();
+  const { user, logout, refreshUser, refreshing } = useAuth();
   const router = useRouter();
+  const [refreshed, setRefreshed] = useState(false);
 
   // `user` is cached from login/session-restore, so trips_planned and
   // itineraries_generated go stale the moment a trip is created elsewhere.
   // `refreshUser` comes from context, so the setState it performs on resolve
   // is not reachable synchronously from this effect body.
   useEffect(() => {
-    void refreshUser();
+    void refreshUser().then(() => setRefreshed(true));
   }, [refreshUser]);
 
-  if (!user) return null;
+  // Nothing renders until the refresh lands. `user` is already cached from
+  // session restore, so painting it first would show last-known counters and
+  // then correct them — exactly the stale flash we want gone here.
+  if (!user || !refreshed || refreshing) {
+    return <LoadingState stage="loading" message="Loading your profile..." />;
+  }
 
   const initials = user.name
     .split(' ')

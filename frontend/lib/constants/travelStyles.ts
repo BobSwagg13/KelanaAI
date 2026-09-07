@@ -3,48 +3,56 @@ export interface TravelStyle {
   name: string;
   description: string;
   icon: string;
-  budgetRange: string;
 }
 
 /**
- * Trip pace and budget style. Independent from `TRAVEL_GROUPS` (who's
- * traveling) — a trip can be both "backpacker" and "family".
+ * What the traveller wants to DO. Purely an interest axis.
+ *
+ * It deliberately says nothing about spend: the backend already derives a
+ * budget tier (`category`) from the budget figure, so offering "Backpacker /
+ * Standard / Luxury" here duplicated that — and let a trip claim to be Luxury
+ * on a $500 budget. Those three ids are gone; `getTravelStyle` returns
+ * undefined for them and the UI simply omits the badge on older trips.
+ *
+ * These map onto the activity categories the itinerary prompt uses, so a style
+ * translates directly into the kind of days that get generated.
  */
 export const TRAVEL_STYLES: TravelStyle[] = [
   {
-    id: 'backpacker',
-    name: 'Backpacker',
-    description: 'Hostels, local transport, and budget-friendly experiences',
-    icon: 'Backpack',
-    budgetRange: 'Under $700',
-  },
-  {
-    id: 'standard',
-    name: 'Standard',
-    description: 'Mid-range hotels with a balanced mix of experiences',
-    icon: 'Building2',
-    budgetRange: '$700 - $2,000',
-  },
-  {
-    id: 'luxury',
-    name: 'Luxury',
-    description: 'High-end hotels and premium, curated experiences',
-    icon: 'Gem',
-    budgetRange: '$2,000+',
-  },
-  {
-    id: 'adventure',
-    name: 'Adventure',
-    description: 'Outdoor activities, hiking, and adrenaline-fueled sports',
-    icon: 'Mountain',
-    budgetRange: '$800 - $2,500',
+    id: 'sightseeing',
+    name: 'Sightseeing',
+    description: 'The landmarks and views the city is known for',
+    icon: 'Camera',
   },
   {
     id: 'cultural',
     name: 'Cultural',
     description: 'Museums, historical sites, and local traditions',
     icon: 'Landmark',
-    budgetRange: '$700 - $2,000',
+  },
+  {
+    id: 'adventure',
+    name: 'Adventure',
+    description: 'Hiking, water sports, and adrenaline-fuelled days',
+    icon: 'Mountain',
+  },
+  {
+    id: 'nature',
+    name: 'Nature & Outdoors',
+    description: 'Parks, wildlife, gardens, and scenic countryside',
+    icon: 'TreePine',
+  },
+  {
+    id: 'food',
+    name: 'Food & Drink',
+    description: 'Markets, street food, cooking classes, and standout meals',
+    icon: 'Utensils',
+  },
+  {
+    id: 'relaxed',
+    name: 'Relaxed',
+    description: 'An unhurried pace with time to sit still and wander',
+    icon: 'Waves',
   },
 ];
 

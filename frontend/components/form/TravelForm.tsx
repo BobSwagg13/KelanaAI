@@ -63,10 +63,15 @@ export function TravelForm({
     control,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<TripFormData>({
     resolver: zodResolver(tripFormSchema),
     defaultValues: initialValues ?? EMPTY_DEFAULTS,
+    // Needed for a live `isValid`, which gates the submit button below. Under
+    // the default 'onSubmit' mode isValid is not kept current, so the button
+    // enabled as soon as a map pin existed and only then reported the fields
+    // that were still empty.
+    mode: 'onTouched',
   });
 
   const budget = watch('budget');
@@ -190,16 +195,25 @@ export function TravelForm({
           type="submit"
           size="lg"
           loading={isLoading}
-          disabled={!selectedLocation}
+          disabled={!selectedLocation || !isValid}
           data-testid="submit-trip"
           className="mt-2 self-start"
         >
           {isLoading ? loadingLabel : submitLabel}
         </Button>
-        {!selectedLocation && (
+        {/* Say which of the two things is missing, rather than letting the
+            button enable on the map pin alone and only surfacing the empty
+            fields once it is pressed. */}
+        {!selectedLocation ? (
           <p className="text-sm text-brand-muted -mt-4">
             Select a destination on the map to continue.
           </p>
+        ) : (
+          !isValid && (
+            <p className="text-sm text-brand-muted -mt-4">
+              Fill in the remaining fields to continue.
+            </p>
+          )
         )}
       </fieldset>
     </form>

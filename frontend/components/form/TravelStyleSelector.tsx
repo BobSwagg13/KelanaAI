@@ -1,6 +1,14 @@
 'use client';
 
-import { Backpack, Building2, Gem, Mountain, Landmark, type LucideIcon } from 'lucide-react';
+import {
+  Camera,
+  Landmark,
+  Mountain,
+  TreePine,
+  Utensils,
+  Waves,
+  type LucideIcon,
+} from 'lucide-react';
 import { CardOptionSelector } from './CardOptionSelector';
 import { TRAVEL_STYLES } from '@/lib/constants/travelStyles';
 
@@ -12,19 +20,20 @@ export interface TravelStyleSelectorProps {
 }
 
 const ICONS: Record<string, LucideIcon> = {
-  Backpack,
-  Building2,
-  Gem,
-  Mountain,
+  Camera,
   Landmark,
+  Mountain,
+  TreePine,
+  Utensils,
+  Waves,
 };
 
-/** Trip pace and budget style. See TravelGroupSelector for who's traveling. */
+/** What the traveller wants to do. See TravelGroupSelector for who's going. */
 export function TravelStyleSelector({ value, onChange, error, className }: TravelStyleSelectorProps) {
   return (
     <CardOptionSelector
       legend="Travel Style"
-      options={TRAVEL_STYLES.map((style) => ({ ...style, meta: style.budgetRange }))}
+      options={TRAVEL_STYLES}
       icons={ICONS}
       fallbackIcon={Landmark}
       value={value}

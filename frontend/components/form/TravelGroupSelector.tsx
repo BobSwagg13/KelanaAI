@@ -1,6 +1,6 @@
 'use client';
 
-import { User, Heart, Users, type LucideIcon } from 'lucide-react';
+import { User, Heart, Users, UsersRound, type LucideIcon } from 'lucide-react';
 import { CardOptionSelector } from './CardOptionSelector';
 import { TRAVEL_GROUPS } from '@/lib/constants/travelGroups';
 
@@ -12,6 +12,7 @@ export interface TravelGroupSelectorProps {
 }
 
 const ICONS: Record<string, LucideIcon> = {
+  UsersRound,
   User,
   Heart,
   Users,

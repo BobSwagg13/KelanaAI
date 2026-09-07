@@ -6,8 +6,8 @@ export interface TravelGroup {
 }
 
 /**
- * Who's traveling. Independent from `TRAVEL_STYLES` (pace/budget) — a family
- * can be backpacking, a solo traveler can go luxury, etc.
+ * Who's traveling. Independent from `TRAVEL_STYLES` (what you want to do) —
+ * a family can be after adventure, a solo traveller can be after food, etc.
  */
 export const TRAVEL_GROUPS: TravelGroup[] = [
   {
@@ -27,6 +27,12 @@ export const TRAVEL_GROUPS: TravelGroup[] = [
     name: 'Family',
     description: 'Family-friendly activities and pacing, comfort in mind',
     icon: 'Users',
+  },
+  {
+    id: 'friends',
+    name: 'Friends',
+    description: 'Group-friendly venues, shared plans, and livelier evenings',
+    icon: 'UsersRound',
   },
 ];
 
