@@ -10,6 +10,10 @@ travel questions from a curated document library and shows its sources.
   Knowledge Base (visa checklists, customs and payment guides, city guides).
   Every answer lists the passages it was written from.
 
+## Demo
+
+[![KelanaAI demo](https://img.youtube.com/vi/4L_SEeNIpSg/maxresdefault.jpg)](https://youtu.be/4L_SEeNIpSg)
+
 ---
 
 ## Architecture

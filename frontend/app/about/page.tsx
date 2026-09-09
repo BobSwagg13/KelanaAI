@@ -61,6 +61,16 @@ export default function AboutPage() {
         </p>
       </header>
 
+      <div className="mt-10 aspect-video overflow-hidden rounded-2xl border border-brand-border shadow-sm">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/4L_SEeNIpSg"
+          title="KelanaAI demo"
+          allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
+          allowFullScreen
+          className="h-full w-full"
+        />
+      </div>
+
       <h2 className="mt-12 font-display text-2xl font-bold tracking-tight text-brand-ink">
         How planning works
       </h2>
